@@ -16,4 +16,6 @@ abstract class BaseActivity : AppCompatActivity() {
 
     abstract fun initView()
     open fun onClickEvent() {}
+
+    fun checkActive(): Boolean = !isFinishing
 }
