@@ -18,5 +18,7 @@ abstract class BaseFragment : Fragment() {
         setView(view, savedInstanceState, arguments)
     }
 
+    open fun onClickEvent() {}
+
     fun checkActive(): Boolean = isAdded
 }
