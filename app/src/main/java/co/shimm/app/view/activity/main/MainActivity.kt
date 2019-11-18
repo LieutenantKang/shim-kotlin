@@ -23,10 +23,6 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
         bottomNavigationView.setOnNavigationItemSelectedListener(this)
     }
 
-    override fun onClickEvent() {
-        super.onClickEvent()
-    }
-
     override fun onNavigationItemSelected(menu: MenuItem): Boolean {
         when(menu.itemId){
             R.id.navigation_home ->{

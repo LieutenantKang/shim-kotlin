@@ -31,10 +31,5 @@ class HomeFragment : BaseFragment(), HomeContract.View {
 
         presenter.initHomeList(false)
     }
-
-    override fun onClickEvent() {
-        super.onClickEvent()
-    }
-
     override fun isViewActive(): Boolean = checkActive()
 }

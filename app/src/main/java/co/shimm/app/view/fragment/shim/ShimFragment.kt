@@ -13,10 +13,6 @@ class ShimFragment : BaseFragment(), ShimContract.View {
 
     }
 
-    override fun onClickEvent() {
-        super.onClickEvent()
-    }
-
     override lateinit var presenter: ShimContract.Presenter
 
     override fun isViewActive(): Boolean = checkActive()

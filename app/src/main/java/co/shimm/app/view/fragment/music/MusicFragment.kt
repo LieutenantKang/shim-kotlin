@@ -13,10 +13,6 @@ class MusicFragment : BaseFragment(), MusicContract.View {
 
     }
 
-    override fun onClickEvent() {
-        super.onClickEvent()
-    }
-
     override lateinit var presenter: MusicContract.Presenter
 
     override fun isViewActive(): Boolean = checkActive()
