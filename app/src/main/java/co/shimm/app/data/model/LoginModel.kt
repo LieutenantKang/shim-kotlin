@@ -5,7 +5,7 @@ import android.content.Intent
 import android.util.Log
 import co.shimm.app.data.room.LoginRequest
 import co.shimm.app.data.room.LoginResponse
-import co.shimm.app.retrofit.RetrofitGenerator
+import co.shimm.app.data.retrofit.RetrofitGenerator
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions

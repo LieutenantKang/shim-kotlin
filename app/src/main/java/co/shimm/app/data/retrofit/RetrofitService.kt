@@ -1,4 +1,4 @@
-package co.shimm.app.retrofit
+package co.shimm.app.data.retrofit
 
 import co.shimm.app.data.room.LoginRequest
 import co.shimm.app.data.room.LoginResponse

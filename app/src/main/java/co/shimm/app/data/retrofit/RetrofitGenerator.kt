@@ -1,4 +1,4 @@
-package co.shimm.app.retrofit
+package co.shimm.app.data.retrofit
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

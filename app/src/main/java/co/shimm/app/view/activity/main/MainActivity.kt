@@ -14,7 +14,7 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
         get() = R.layout.activity_main
 
     override fun initView() {
-        presenter = MainPresenter(this)
+        presenter = MainPresenter(this@MainActivity, this)
         presenter.start()
 
         val bottomNavigationView = findViewById<View>(R.id.main_navigation_view) as BottomNavigationView
