@@ -17,6 +17,8 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
         presenter = MainPresenter(this@MainActivity, this)
         presenter.start()
 
+        presenter.fetchData()
+
         val bottomNavigationView = findViewById<View>(R.id.main_navigation_view) as BottomNavigationView
         val fragmentHome = HomeFragment()
         supportFragmentManager.beginTransaction().replace(R.id.main_frame_layout,fragmentHome).commitAllowingStateLoss()

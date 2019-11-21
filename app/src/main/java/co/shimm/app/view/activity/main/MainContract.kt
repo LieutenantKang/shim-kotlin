@@ -8,6 +8,6 @@ interface MainContract {
     }
 
     interface Presenter: BaseContract.BasePresenter{
-
+        fun fetchData()
     }
 }

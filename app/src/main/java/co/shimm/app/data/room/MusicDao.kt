@@ -10,6 +10,9 @@ interface MusicDao {
     @Query("SELECT * FROM music")
     fun getAll() : List<Music>
 
+    @Query("SELECT * FROM music WHERE category = (:category)")
+    fun findByCategory(category: String) : List<Music>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(musicList : List<Music>)
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.View
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
+import co.shimm.app.view.activity.main.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
@@ -25,7 +26,9 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
     override fun onClick(v: View) {
         when(v.id){
             R.id.login_login_button -> {
-                presenter!!.signIn()
+//                presenter!!.signIn()
+                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                startActivity(intent)
             }
         }
     }
