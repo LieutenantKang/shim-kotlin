@@ -14,11 +14,9 @@ import kotlinx.android.synthetic.main.card_home.view.*
 class HomeAdapter(val context: Context) : AdapterContract.View, AdapterContract.Model, RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
     private lateinit var homeList : ArrayList<Shim>
 
-    override fun onBindViewHolder(holder: HomeAdapter.HomeViewHolder, position: Int) {
-        homeList[position].let{item->
-            with(holder){
-                homeTitle.text = item.title
-            }
+    override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
+        with(holder){
+            homeTitle.text = homeList[position].title
         }
 
         holder.homePlayButton.setOnClickListener {
@@ -26,7 +24,7 @@ class HomeAdapter(val context: Context) : AdapterContract.View, AdapterContract.
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeAdapter.HomeViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.card_home,parent,false)
         return HomeViewHolder(view)
     }

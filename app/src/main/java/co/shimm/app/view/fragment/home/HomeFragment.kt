@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import co.shimm.app.R
 import co.shimm.app.base.BaseFragment
 import co.shimm.app.view.adapter.HomeAdapter
-import co.shimm.app.view.fragment.music.MusicFragment
 
 class HomeFragment : BaseFragment(), HomeContract.View {
     override val layoutRes: Int

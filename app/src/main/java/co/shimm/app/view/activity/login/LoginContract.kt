@@ -5,9 +5,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 
 interface LoginContract {
-    interface View: BaseContract.BaseView<Presenter>{
-
-    }
+    interface View: BaseContract.BaseView<Presenter>
 
     interface Presenter: BaseContract.BasePresenter{
         fun signIn()

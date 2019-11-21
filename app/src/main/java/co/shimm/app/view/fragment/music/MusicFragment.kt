@@ -17,7 +17,6 @@ import co.shimm.app.data.room.Music
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.card_music.view.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MusicFragment : BaseFragment(), MusicContract.View {
     override val layoutRes: Int

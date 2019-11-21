@@ -6,11 +6,11 @@ import co.shimm.app.data.room.Shim
 class HomeModel(context: Context) {
     fun loadHome(): ArrayList<Shim>{
         val shimList = ArrayList<Shim>()
-        var shimFirst = Shim()
+        val shimFirst = Shim()
         shimFirst.title = "Title1"
         shimList.add(shimFirst)
 
-        var shimSecond = Shim()
+        val shimSecond = Shim()
         shimSecond.title = "Title2"
         shimList.add(shimSecond)
 

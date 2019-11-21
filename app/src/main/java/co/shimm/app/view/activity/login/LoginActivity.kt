@@ -37,7 +37,7 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode == 3333){
-            var task : Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+            val task : Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             presenter.checkAccount(task)
         }
     }

@@ -5,18 +5,18 @@
         android:id="@+id/navigation_home"
         android:enabled="true"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home"/>
+        android:title="@string/bottom_menu_home"/>
 
     <item
         android:id="@+id/navigation_shim"
         android:enabled="true"
         android:icon="@drawable/ic_spa_black_24dp"
-        android:title="Shim"/>
+        android:title="@string/bottom_menu_shim"/>
 
     <item
         android:id="@+id/navigation_music"
         android:enabled="true"
         android:icon="@drawable/ic_music_note_black_24dp"
-        android:title="Music"/>
+        android:title="@string/bottom_menu_music"/>
 
 </menu>
