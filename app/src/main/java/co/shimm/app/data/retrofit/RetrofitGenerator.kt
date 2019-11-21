@@ -1,5 +1,6 @@
 package co.shimm.app.data.retrofit
 
+import co.shimm.app.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -19,7 +20,7 @@ object RetrofitGenerator {
     private val retrofit =
         Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl("http://52.78.106.14")
+            .baseUrl(BuildConfig.SERVER_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     fun create(): RetrofitService = retrofit.create(RetrofitService::class.java)
