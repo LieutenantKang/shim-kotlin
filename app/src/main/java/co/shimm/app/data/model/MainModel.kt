@@ -17,7 +17,7 @@ class MainModel(context: Context) {
     }
 
     fun fetchData(){
-        var musicList = ArrayList<Music>()
+        val musicList = ArrayList<Music>()
         musicList.add(Music(1, "favorite-1", "favorite"))
         musicList.add(Music(2, "favorite-2", "favorite"))
         musicList.add(Music(3, "favorite-3", "favorite"))
@@ -28,7 +28,7 @@ class MainModel(context: Context) {
         musicList.add(Music(8 , "relax-3", "relax"))
         musicList.add(Music(9, "relax-4", "relax"))
         musicList.add(Music(10, "focus-1", "focus"))
-        musicList.add(Music(10, "focus-2", "focus"))
+        musicList.add(Music(11, "focus-2", "focus"))
         musicList.add(Music(12,"focus-3", "focus"))
 
         Thread { database.musicDao.insertAll(musicList)}.start()

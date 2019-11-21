@@ -1,7 +1,5 @@
 package co.shimm.app.view.fragment.music
 
-import android.content.Context
-import android.os.AsyncTask
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +14,6 @@ import androidx.viewpager.widget.ViewPager
 import co.shimm.app.R
 import co.shimm.app.base.BaseFragment
 import co.shimm.app.data.room.Music
-import co.shimm.app.data.room.MusicDao
-import co.shimm.app.data.room.ShimDatabase
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.card_music.view.*
 import java.util.*
@@ -27,13 +23,12 @@ class MusicFragment : BaseFragment(), MusicContract.View {
     override val layoutRes: Int
     get() = R.layout.fragment_music
 
-    companion object{
-        private var recyclerViews = arrayOf<RecyclerView?>(null, null, null, null, null)
-    }
-
     override lateinit var presenter: MusicContract.Presenter
+    var recyclerViews = arrayOf<RecyclerView?>(null, null, null, null, null)
 
     override fun setView(view: View?, savedInstanceState: Bundle?, arguments: Bundle?) {
+        presenter = MusicPresenter(this@MusicFragment, requireContext())
+
         val pagerAdapter = PagerAdapter(childFragmentManager)
         val pager : ViewPager? = view?.findViewById(R.id.music_pager)
         pager?.adapter = pagerAdapter
@@ -47,14 +42,14 @@ class MusicFragment : BaseFragment(), MusicContract.View {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val position : Int? = tab?.position
                 val recyclerView : RecyclerView? = recyclerViews[position!!]
-                Page.RecyclerViewUpdater(recyclerView?.adapter as Page.MusicAdapter).execute(context, position)
+                presenter.updateRecyclerViewData(recyclerView?.adapter as Page.MusicAdapter, position)
             }
         })
     }
 
     override fun isViewActive(): Boolean = checkActive()
 
-    class Page : Fragment() {
+    class Page(private val presenter: MusicContract.Presenter, private val recyclerViews: Array<RecyclerView?>) : Fragment() {
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
             return inflater.inflate(R.layout.fragment_music_page, container, false)
         }
@@ -67,30 +62,10 @@ class MusicFragment : BaseFragment(), MusicContract.View {
             recyclerView.adapter = recyclerViewAdapter
 
             recyclerViews[position!!] = recyclerView
-            RecyclerViewUpdater(recyclerViewAdapter).execute(requireContext(), position)
+            presenter.updateRecyclerViewData(recyclerViewAdapter,position)
         }
 
-        class RecyclerViewUpdater(private val adapter : MusicAdapter): AsyncTask<Any, Void, Void>() {
-            override fun doInBackground(vararg params: Any): Void? {
-                val dao : MusicDao = ShimDatabase.getInstance(params[0] as Context).musicDao
-                val position = params[1] as Int
-                when (position){
-                    0 -> adapter.setItem(dao.getAll() as ArrayList<Music>)
-                    1 -> adapter.setItem(dao.findByCategory("favorite") as ArrayList<Music>)
-                    2 -> adapter.setItem(dao.findByCategory("asmr") as ArrayList<Music>)
-                    3 -> adapter.setItem(dao.findByCategory("relax") as ArrayList<Music>)
-                    4 -> adapter.setItem(dao.findByCategory("focus") as ArrayList<Music>)
-                }
-                adapter.setTabPosition(position)
-                return null
-            }
-
-            override fun onPostExecute(result: Void?) {
-                adapter.notifyDataSetChanged()
-            }
-        }
-
-        inner class MusicAdapter : RecyclerView.Adapter<MusicAdapter.ViewHolder>() {
+        class MusicAdapter : RecyclerView.Adapter<MusicAdapter.ViewHolder>() {
             private lateinit var musicList : ArrayList<Music>
             private var tabPosition: Int? = null
 
@@ -100,10 +75,8 @@ class MusicFragment : BaseFragment(), MusicContract.View {
             }
 
             override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-                musicList[position].let{item->
-                    with(holder){
-                        musicTitle.text = item.title
-                    }
+                with(holder){
+                    musicTitle.text = musicList[position].title
                 }
 
                 holder.musicPlayButton.setOnClickListener {
@@ -129,7 +102,7 @@ class MusicFragment : BaseFragment(), MusicContract.View {
     inner class PagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getItem(position: Int): Fragment {
-            val page: Fragment = Page()
+            val page: Fragment = Page(presenter, recyclerViews)
             val args = Bundle()
             args.putInt("position", position)
             page.arguments = args
