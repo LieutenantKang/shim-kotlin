@@ -5,7 +5,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 
 interface LoginContract {
-    interface View: BaseContract.BaseView<Presenter>
+    interface Model{
+        interface LoginFinishedListener{
+            fun onFinished(googleToken : String)
+            fun onFailure(t : Throwable)
+        }
+
+        fun signIn()
+        fun checkAccount(task: Task<GoogleSignInAccount>, loginFinishedListener: LoginFinishedListener)
+    }
+
+    interface View: BaseContract.BaseView<Presenter>{
+        fun startMainActivity()
+    }
 
     interface Presenter: BaseContract.BasePresenter{
         fun signIn()

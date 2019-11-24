@@ -4,6 +4,8 @@ import android.content.Intent
 import android.view.View
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
+import co.shimm.app.const.Const.Login.REQUEST_CODE
+import co.shimm.app.view.activity.main.MainActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
@@ -26,8 +28,6 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
         when(v.id){
             R.id.login_login_button -> {
                 presenter.signIn()
-//                val intent = Intent(this@LoginActivity, MainActivity::class.java)
-//                startActivity(intent)
             }
         }
     }
@@ -35,10 +35,15 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
     override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?){
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == 3333){
+        if(requestCode == REQUEST_CODE){
             val task : Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             presenter.checkAccount(task)
         }
+    }
+
+    override fun startMainActivity() {
+        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+        startActivity(intent)
     }
 
     override fun isViewActive(): Boolean = checkActive()
