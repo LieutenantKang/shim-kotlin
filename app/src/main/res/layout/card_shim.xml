@@ -26,6 +26,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             app:srcCompat="@drawable/ic_play_arrow_black_64dp"
+            android:background="@android:color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -37,7 +38,6 @@
             android:layout_width="40dp"
             android:layout_height="24dp"
             android:layout_margin="12dp"
-            android:background="?attr/scrimBackground"
             android:gravity="center_vertical"
             android:ellipsize="end"
             android:maxLines="1"
@@ -45,39 +45,13 @@
             app:layout_constraintBottom_toTopOf="@id/card_shim_title"
             app:layout_constraintRight_toRightOf="parent"/>
 
-        <ImageButton
-            android:id="@+id/card_shim_artist_thumbnail"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/round_button"
-            android:src="@mipmap/ic_launcher_round"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent" />
-
         <TextView
             android:id="@+id/card_shim_title"
             style="@style/TextAppearance.MaterialComponents.Subtitle1"
             android:layout_width="match_parent"
             android:layout_height="36dp"
-            android:background="?attr/scrimBackground"
             android:ellipsize="end"
             android:gravity="center_vertical"
-            android:maxLines="2"
-            android:paddingStart="60dp"
-            android:paddingEnd="12dp"
-            android:textColor="#FFFFDE"
-            app:layout_constraintBottom_toTopOf="@id/card_shim_artist_name"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <TextView
-            android:id="@+id/card_shim_artist_name"
-            style="@style/TextAppearance.MaterialComponents.Caption"
-            android:layout_width="match_parent"
-            android:layout_height="24dp"
-            android:background="?attr/scrimBackground"
-            android:ellipsize="end"
             android:maxLines="2"
             android:paddingStart="60dp"
             android:paddingEnd="12dp"

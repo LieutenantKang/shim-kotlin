@@ -85,9 +85,7 @@ class MusicFragment : BaseFragment(), MusicContract.View {
 
             override fun getItemCount() = musicList.size
 
-            fun setItem(musicList : ArrayList<Music>) {
-                this.musicList = musicList
-            }
+            fun setItem(musicList : ArrayList<Music>) { this.musicList = musicList }
 
             fun setTabPosition(tabPosition : Int) { this.tabPosition = tabPosition }
 

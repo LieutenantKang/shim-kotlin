@@ -7,12 +7,10 @@ import co.shimm.app.view.fragment.home.HomeFragment
 class HomeModel(context: Context) {
     fun initRecyclerViewData(adapter: HomeFragment.HomeAdapter){
         val shimList = ArrayList<Shim>()
-        val shimFirst = Shim()
-        shimFirst.title = "Title1"
+        val shimFirst = Shim(1,"home_title_1", 1, "", "", "", 10)
         shimList.add(shimFirst)
 
-        val shimSecond = Shim()
-        shimSecond.title = "Title2"
+        val shimSecond = Shim(2,"home_title_2", 1, "", "", "", 10)
         shimList.add(shimSecond)
         adapter.setItem(shimList)
         adapter.notifyDataSetChanged()
