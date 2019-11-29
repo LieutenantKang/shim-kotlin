@@ -14,5 +14,5 @@ interface MusicDao {
     fun findByCategory(category: String) : List<Music>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(musicList : List<Music>)
+    fun insertAll(musicList : ArrayList<Music>?)
 }

@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Shim::class, Music::class], version = 1, exportSchema = false)
+@Database(entities = [Shim::class, Music::class], version = 2, exportSchema = false)
 abstract class ShimDatabase : RoomDatabase() {
     abstract val shimDao : ShimDao
     abstract val musicDao : MusicDao

@@ -14,5 +14,5 @@ interface ShimDao {
     fun findByCategory(category: String) : List<Shim>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(shimList : List<Shim>)
+    fun insert(shimList: ArrayList<Shim>?)
 }
