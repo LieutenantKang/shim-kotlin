@@ -12,6 +12,7 @@ android {
         applicationId "co.shimm.app"
         minSdkVersion 19
         targetSdkVersion 29
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
@@ -60,4 +61,7 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-ui:2.10.5'
     kapt "androidx.room:room-compiler:2.2.2"
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
 }

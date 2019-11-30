@@ -11,7 +11,7 @@ interface ShimDao {
     fun getAll() : List<Shim>
 
     @Query("SELECT * FROM shim WHERE category = (:category)")
-    fun findByCategory(category: String) : List<Shim>
+    fun findByCategory(category: Int) : List<Shim>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(shimList: ArrayList<Shim>?)

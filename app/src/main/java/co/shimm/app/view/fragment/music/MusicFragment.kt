@@ -1,10 +1,12 @@
 package co.shimm.app.view.fragment.music
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -14,6 +16,11 @@ import androidx.viewpager.widget.ViewPager
 import co.shimm.app.R
 import co.shimm.app.base.BaseFragment
 import co.shimm.app.data.room.Music
+import co.shimm.app.view.activity.main.MainActivity.Companion.changeTitle
+import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayer
+import com.bumptech.glide.Glide
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.card_music.view.*
 import java.util.*
@@ -74,12 +81,20 @@ class MusicFragment : BaseFragment(), MusicContract.View {
             }
 
             override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+                val music = musicList[position]
+                Glide.with(holder.itemView.context).load(music.thumbnail)
+                    .error(R.drawable.card_image_sample).into(holder.musicThumbnail)
+
                 with(holder){
-                    musicTitle.text = musicList[position].title
+                    musicTitle.text = music.title
                 }
 
                 holder.musicPlayButton.setOnClickListener {
-                    // Play the music
+                    val mediaSource = ProgressiveMediaSource.Factory(DefaultHttpDataSourceFactory(R.string.app_name.toString()))
+                        .createMediaSource(Uri.parse(music.src))
+                    mainPlayer?.prepare(mediaSource)
+                    mainPlayer?.playWhenReady = true
+                    changeTitle(music.title.toString())
                 }
             }
 
@@ -91,6 +106,7 @@ class MusicFragment : BaseFragment(), MusicContract.View {
 
             inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
                 val musicTitle : TextView = view.card_music_title
+                val musicThumbnail : ImageView = view.card_music_thumbnail
                 val musicPlayButton : ImageButton = view.card_music_play_button
             }
         }

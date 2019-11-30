@@ -13,10 +13,10 @@ class MusicModel(context: Context) {
         lateinit var updateThread : Thread
         when (position){
             0 -> updateThread = Thread { adapter.setItem(musicDao.getAll() as ArrayList<Music>)}
-            1 -> updateThread = Thread { adapter.setItem(musicDao.findByCategory("favorite") as ArrayList<Music>)}
-            2 -> updateThread = Thread { adapter.setItem(musicDao.findByCategory("asmr") as ArrayList<Music>)}
-            3 -> updateThread = Thread { adapter.setItem(musicDao.findByCategory("relax") as ArrayList<Music>)}
-            4 -> updateThread = Thread { adapter.setItem(musicDao.findByCategory("focus") as ArrayList<Music>)}
+            1 -> updateThread = Thread { adapter.setItem(musicDao.findByCategory(0) as ArrayList<Music>)}
+            2 -> updateThread = Thread { adapter.setItem(musicDao.findByCategory(0) as ArrayList<Music>)}
+            3 -> updateThread = Thread { adapter.setItem(musicDao.findByCategory(1) as ArrayList<Music>)}
+            4 -> updateThread = Thread { adapter.setItem(musicDao.findByCategory(2) as ArrayList<Music>)}
         }
 
         updateThread.start()

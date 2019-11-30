@@ -26,6 +26,10 @@ class MainModel(context: Context) {
         val shimCall = RetrofitGenerator.create().getShims()
         shimCall.enqueue(object : Callback<ShimResponse>{
             override fun onResponse(call: Call<ShimResponse>, response: Response<ShimResponse>) {
+                for(i in response.body()?.shims!!){
+                    i.src = "http://s3.ap-northeast-2.amazonaws.com/shim-music/" + i.src
+                    i.thumbnail = "http://s3.ap-northeast-2.amazonaws.com/shim-music/" + i.thumbnail
+                }
                 Thread { shimDao.insert(response.body()?.shims)}.start()
             }
             override fun onFailure(call: Call<ShimResponse>, t: Throwable) {
@@ -36,6 +40,10 @@ class MainModel(context: Context) {
         val musicCall = RetrofitGenerator.create().getMusics()
         musicCall.enqueue(object : Callback<MusicResponse>{
             override fun onResponse(call: Call<MusicResponse>, response: Response<MusicResponse>) {
+                for(i in response.body()?.musics!!){
+                    i.src = "http://s3.ap-northeast-2.amazonaws.com/shim-music/" + i.src
+                    i.thumbnail = "http://s3.ap-northeast-2.amazonaws.com/shim-music/" + i.thumbnail
+                }
                 Thread { musicDao.insertAll(response.body()?.musics)}.start()
             }
             override fun onFailure(call: Call<MusicResponse>, t: Throwable) {

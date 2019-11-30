@@ -31,6 +31,7 @@
             android:paddingLeft="12dp"
             android:paddingEnd="12dp"
             android:paddingRight="12dp"
+            android:textColor="#010038"
             app:layout_constraintTop_toBottomOf="@id/card_home_thumbnail"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

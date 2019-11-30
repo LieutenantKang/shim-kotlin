@@ -13,6 +13,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
         android:text="@string/home_today"
+        android:textColor="#010038"
         android:textSize="40sp"/>
 
     <TextView
@@ -23,6 +24,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         android:text="@string/home_title"
         android:textSize="20sp"
+        android:textColor="#010038"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"/>
 
