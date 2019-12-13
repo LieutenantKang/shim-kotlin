@@ -1,46 +1,43 @@
 package co.shimm.app.view.activity.player
 
-import android.net.Uri
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
-import com.google.android.exoplayer2.ExoPlayerFactory
-import com.google.android.exoplayer2.source.ConcatenatingMediaSource
-import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.DataSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayer
+import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayerThumbnail
+import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayerTitle
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_player.*
+import kotlinx.android.synthetic.main.custom_player.*
 
 class PlayerActivity : BaseActivity(), PlayerContract.View, View.OnClickListener {
     override val layoutRes: Int
         get() = R.layout.activity_player
 
+    lateinit var customTestTitle : TextView
+    lateinit var customTestThumbnail : ImageView
+
     override fun initView() {
         presenter = PlayerPresenter(this@PlayerActivity, this)
         presenter.start()
 
-        var musicPlayer = ExoPlayerFactory.newSimpleInstance(this)
-        music_player.player = musicPlayer
+        val playerTitleView = findViewById<View>(R.id.player_title) as TextView?
+        val playerThumbnail = findViewById<View>(R.id.player_thumbnail) as ImageView?
+        player_player.player = mainPlayer
 
-        val uriList: ArrayList<Uri> = arrayListOf()
-        uriList.add(Uri.parse("https://s3.ap-northeast-2.amazonaws.com/shim-music/White_River.mp3"))
-        uriList.add(Uri.parse("https://s3.ap-northeast-2.amazonaws.com/shim-music/Minyo_San_Kyoku.mp3"))
-        val mediaSource : MediaSource = buildMediaSource(uriList)
-        musicPlayer.playWhenReady = true
-        musicPlayer.seekTo(0, 0)
-        musicPlayer.prepare(mediaSource, false, false)
-    }
+        customTestTitle = player_title
+        customTestThumbnail = findViewById<View>(R.id.player_thumbnail) as ImageView
 
-    fun buildMediaSource(uriList : ArrayList<Uri>) : MediaSource{
-        val dataSourceFactory : DataSource.Factory = DefaultDataSourceFactory(this, "exo-player")
-        val mediaSourceFactory : ProgressiveMediaSource.Factory = ProgressiveMediaSource.Factory(dataSourceFactory)
-        return ConcatenatingMediaSource(mediaSourceFactory.createMediaSource(uriList[0]), mediaSourceFactory.createMediaSource(uriList[1]))
+        customTestTitle.text = mainPlayerTitle
+        Glide.with(this).load(mainPlayerThumbnail)
+            .centerCrop().into(customTestThumbnail)
     }
 
     override lateinit var presenter: PlayerContract.Presenter
 
-    override fun onClick(p0: View?) {
+    override fun onClick(v: View) {
 
     }
 

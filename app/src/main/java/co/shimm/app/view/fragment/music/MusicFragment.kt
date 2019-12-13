@@ -18,6 +18,8 @@ import co.shimm.app.base.BaseFragment
 import co.shimm.app.data.room.Music
 import co.shimm.app.view.activity.main.MainActivity.Companion.changeTitle
 import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayer
+import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayerThumbnail
+import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayerTitle
 import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
@@ -89,12 +91,16 @@ class MusicFragment : BaseFragment(), MusicContract.View {
                     musicTitle.text = music.title
                 }
 
+
+
                 holder.musicPlayButton.setOnClickListener {
                     val mediaSource = ProgressiveMediaSource.Factory(DefaultHttpDataSourceFactory(R.string.app_name.toString()))
                         .createMediaSource(Uri.parse(music.src))
                     mainPlayer?.prepare(mediaSource)
                     mainPlayer?.playWhenReady = true
                     changeTitle(music.title.toString())
+                    mainPlayerThumbnail = music.src
+                    mainPlayerTitle = music.title
                 }
             }
 

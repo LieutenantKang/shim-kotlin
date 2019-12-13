@@ -13,7 +13,7 @@ class ShimModel(context: Context) {
         lateinit var updateThread : Thread
         when(position){
             0 -> updateThread = Thread { adapter.setItem(shimDao.getAll() as ArrayList<Shim>)}
-            1 -> updateThread = Thread { adapter.setItem(shimDao.findByCategory(1) as ArrayList<Shim>)}
+            1 -> updateThread = Thread { adapter.setItem(shimDao.findByCategory(0) as ArrayList<Shim>)}
             2 -> updateThread = Thread { adapter.setItem(shimDao.findByCategory(1) as ArrayList<Shim>)}
             3 -> updateThread = Thread { adapter.setItem(shimDao.findByCategory(2) as ArrayList<Shim>)}
             4 -> updateThread = Thread { adapter.setItem(shimDao.findByCategory(2) as ArrayList<Shim>)}

@@ -1,11 +1,13 @@
 package co.shimm.app.view.activity.main
 
+import android.content.Intent
 import android.view.MenuItem
 import android.view.View
 import android.view.View.VISIBLE
 import android.widget.TextView
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
+import co.shimm.app.view.activity.player.PlayerActivity
 import co.shimm.app.view.fragment.home.HomeFragment
 import co.shimm.app.view.fragment.music.MusicFragment
 import co.shimm.app.view.fragment.shim.ShimFragment
@@ -16,12 +18,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_player_control.*
 
-class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnNavigationItemSelectedListener{
+class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
     override val layoutRes: Int
         get() = R.layout.activity_main
 
     companion object{
         var mainPlayer: SimpleExoPlayer? = null
+        var mainPlayerThumbnail : String? = null
+        var mainPlayerTitle : String ? = null
+
         var customTitle : TextView? = null
         var mainPlayerView : PlayerControlView? = null
 
@@ -44,10 +49,21 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
 
         initializePlayer()
 
+        main_player.setOnClickListener(this)
+
         val bottomNavigationView = findViewById<View>(R.id.main_navigation_view) as BottomNavigationView
         val fragmentHome = HomeFragment()
         supportFragmentManager.beginTransaction().replace(R.id.main_frame_layout,fragmentHome).commitAllowingStateLoss()
         bottomNavigationView.setOnNavigationItemSelectedListener(this)
+    }
+
+    override fun onClick(v: View) {
+        when(v.id){
+            R.id.main_player -> {
+                val intent = Intent(this@MainActivity, PlayerActivity::class.java)
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onNavigationItemSelected(menu: MenuItem): Boolean {
