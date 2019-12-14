@@ -16,7 +16,7 @@ import androidx.viewpager.widget.ViewPager
 import co.shimm.app.R
 import co.shimm.app.base.BaseFragment
 import co.shimm.app.data.room.Music
-import co.shimm.app.view.activity.main.MainActivity.Companion.changeTitle
+import co.shimm.app.databinding.CustomPlayerControlBinding
 import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayer
 import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayerThumbnail
 import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayerTitle
@@ -27,7 +27,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.card_music.view.*
 import java.util.*
 
-class MusicFragment : BaseFragment(), MusicContract.View {
+class MusicFragment(val binding: CustomPlayerControlBinding) : BaseFragment(), MusicContract.View {
     override val layoutRes: Int
     get() = R.layout.fragment_music
 
@@ -37,7 +37,7 @@ class MusicFragment : BaseFragment(), MusicContract.View {
     override fun setView(view: View?, savedInstanceState: Bundle?, arguments: Bundle?) {
         presenter = MusicPresenter(this@MusicFragment, requireContext())
 
-        val pagerAdapter = PagerAdapter(childFragmentManager)
+        val pagerAdapter = PagerAdapter(childFragmentManager, binding)
         val pager : ViewPager? = view?.findViewById(R.id.music_pager)
         pager?.adapter = pagerAdapter
         val tabLayout : TabLayout? = view?.findViewById(R.id.music_tab)
@@ -57,7 +57,8 @@ class MusicFragment : BaseFragment(), MusicContract.View {
 
     override fun isViewActive(): Boolean = checkActive()
 
-    class Page(private val presenter: MusicContract.Presenter, private val recyclerViews: Array<RecyclerView?>) : Fragment() {
+    class Page(private val presenter: MusicContract.Presenter, private val recyclerViews: Array<RecyclerView?>, private val binding: CustomPlayerControlBinding) : Fragment() {
+
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
             return inflater.inflate(R.layout.fragment_music_page, container, false)
         }
@@ -65,7 +66,7 @@ class MusicFragment : BaseFragment(), MusicContract.View {
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             val args: Bundle? = arguments
             val position: Int? = Objects.requireNonNull(args)?.getInt("position")
-            val recyclerViewAdapter = MusicAdapter()
+            val recyclerViewAdapter = MusicAdapter(binding)
             val recyclerView : RecyclerView = view.findViewById(R.id.music_recycler_view)
             recyclerView.adapter = recyclerViewAdapter
 
@@ -73,7 +74,7 @@ class MusicFragment : BaseFragment(), MusicContract.View {
             presenter.updateRecyclerViewData(recyclerViewAdapter,position)
         }
 
-        class MusicAdapter : RecyclerView.Adapter<MusicAdapter.ViewHolder>() {
+        class MusicAdapter(val binding: CustomPlayerControlBinding) : RecyclerView.Adapter<MusicAdapter.ViewHolder>() {
             private lateinit var musicList : ArrayList<Music>
             private var tabPosition: Int? = null
 
@@ -92,15 +93,14 @@ class MusicFragment : BaseFragment(), MusicContract.View {
                 }
 
 
-
                 holder.musicPlayButton.setOnClickListener {
                     val mediaSource = ProgressiveMediaSource.Factory(DefaultHttpDataSourceFactory(R.string.app_name.toString()))
                         .createMediaSource(Uri.parse(music.src))
                     mainPlayer?.prepare(mediaSource)
                     mainPlayer?.playWhenReady = true
-                    changeTitle(music.title.toString())
                     mainPlayerThumbnail = music.src
                     mainPlayerTitle = music.title
+                    binding.music?.playingMusicTitle = music.title
                 }
             }
 
@@ -118,10 +118,10 @@ class MusicFragment : BaseFragment(), MusicContract.View {
         }
     }
 
-    inner class PagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    inner class PagerAdapter(manager: FragmentManager, val binding: CustomPlayerControlBinding) : FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getItem(position: Int): Fragment {
-            val page: Fragment = Page(presenter, recyclerViews)
+            val page: Fragment = Page(presenter, recyclerViews, binding)
             val args = Bundle()
             args.putInt("position", position)
             page.arguments = args

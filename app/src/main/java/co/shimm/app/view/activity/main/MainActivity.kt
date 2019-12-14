@@ -3,39 +3,30 @@ package co.shimm.app.view.activity.main
 import android.content.Intent
 import android.view.MenuItem
 import android.view.View
-import android.view.View.VISIBLE
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
+import co.shimm.app.data.PlayingMusic
+import co.shimm.app.databinding.CustomPlayerControlBinding
 import co.shimm.app.view.activity.player.PlayerActivity
 import co.shimm.app.view.fragment.home.HomeFragment
 import co.shimm.app.view.fragment.music.MusicFragment
 import co.shimm.app.view.fragment.shim.ShimFragment
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.custom_player_control.*
 
 class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
     override val layoutRes: Int
         get() = R.layout.activity_main
 
+    lateinit var binding: CustomPlayerControlBinding
+
     companion object{
         var mainPlayer: SimpleExoPlayer? = null
         var mainPlayerThumbnail : String? = null
         var mainPlayerTitle : String ? = null
-
-        var customTitle : TextView? = null
-        var mainPlayerView : PlayerControlView? = null
-
-        fun changeTitle(string : String){
-            customTitle?.text = string
-            if(mainPlayerView?.isVisible!=true){
-                mainPlayerView?.visibility=VISIBLE
-            }
-        }
     }
 
     override fun initView() {
@@ -44,8 +35,8 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
 
         presenter.fetchData()
 
-        customTitle = custom_player_title
-        mainPlayerView = main_player
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.music = PlayingMusic("Hi", "Hi")
 
         initializePlayer()
 
@@ -77,7 +68,7 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
                 supportFragmentManager.beginTransaction().replace(R.id.main_frame_layout,fragmentShim).commitAllowingStateLoss()
             }
             R.id.navigation_music ->{
-                val fragmentMusic = MusicFragment()
+                val fragmentMusic = MusicFragment(binding)
                 supportFragmentManager.beginTransaction().replace(R.id.main_frame_layout,fragmentMusic).commitAllowingStateLoss()
             }
         }
@@ -93,6 +84,9 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
             mainPlayer = ExoPlayerFactory.newSimpleInstance(this)
             main_player.player = mainPlayer
             main_player.showTimeoutMs = 0
+//            mainPlayer = ExoPlayerFactory.newSimpleInstance(this)
+//            main_player.player = mainPlayer
+//            main_player.showTimeoutMs = 0
         }
     }
 }

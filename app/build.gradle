@@ -33,6 +33,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    dataBinding {
+        enabled true
+    }
 }
 
 apply plugin: 'kotlin-kapt'
@@ -64,4 +67,5 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     implementation 'androidx.multidex:multidex:2.0.1'
+    kapt "com.android.databinding:compiler:3.1.4"
 }
