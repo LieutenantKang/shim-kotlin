@@ -1,10 +1,15 @@
 package co.shimm.app.data.model
 
 import android.content.Context
+import android.net.Uri
+import co.shimm.app.R
+import co.shimm.app.data.player.Player
 import co.shimm.app.data.room.Music
 import co.shimm.app.data.room.MusicDao
 import co.shimm.app.data.room.ShimDatabase
 import co.shimm.app.view.fragment.music.MusicFragment
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 
 class MusicModel(context: Context) {
     private val musicDao : MusicDao = ShimDatabase.getInstance(context).musicDao
@@ -28,5 +33,14 @@ class MusicModel(context: Context) {
         }
 
         adapter.setTabPosition(position)
+    }
+
+    fun playMusic(music: Music){
+        val mediaSource = ProgressiveMediaSource.Factory(DefaultHttpDataSourceFactory(R.string.app_name.toString()))
+            .createMediaSource(Uri.parse(music.src))
+        Player.mainPlayer?.prepare(mediaSource)
+        Player.mainPlayer?.playWhenReady = true
+        Player.mainPlayerThumbnail = music.src
+        Player.mainPlayerTitle = music.title
     }
 }

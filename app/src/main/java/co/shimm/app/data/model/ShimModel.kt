@@ -1,10 +1,15 @@
 package co.shimm.app.data.model
 
 import android.content.Context
+import android.net.Uri
+import co.shimm.app.R
+import co.shimm.app.data.player.Player
 import co.shimm.app.data.room.Shim
 import co.shimm.app.data.room.ShimDao
 import co.shimm.app.data.room.ShimDatabase
 import co.shimm.app.view.fragment.shim.ShimFragment
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 
 class ShimModel(context: Context) {
     private val shimDao : ShimDao = ShimDatabase.getInstance(context).shimDao
@@ -28,5 +33,14 @@ class ShimModel(context: Context) {
         }
 
         adapter.setTabPosition(position)
+    }
+
+    fun playShim(shim: Shim){
+        val mediaSource = ProgressiveMediaSource.Factory(DefaultHttpDataSourceFactory(R.string.app_name.toString()))
+            .createMediaSource(Uri.parse(shim.src))
+        Player.mainPlayer?.prepare(mediaSource)
+        Player.mainPlayer?.playWhenReady = true
+        Player.mainPlayerThumbnail = shim.src
+        Player.mainPlayerTitle = shim.title
     }
 }

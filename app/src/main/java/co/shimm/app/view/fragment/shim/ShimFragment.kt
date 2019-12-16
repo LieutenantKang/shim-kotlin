@@ -15,13 +15,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import co.shimm.app.R
 import co.shimm.app.base.BaseFragment
+import co.shimm.app.data.player.PlayerData
+import co.shimm.app.data.player.PlayerEventBus
 import co.shimm.app.data.room.Shim
-import co.shimm.app.view.activity.main.MainActivity
-import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayerThumbnail
-import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayerTitle
 import com.bumptech.glide.Glide
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.card_shim.view.*
 import java.util.*
@@ -65,7 +62,7 @@ class ShimFragment : BaseFragment(), ShimContract.View {
         override fun onViewCreated(view: View, savedInstanceState: Bundle?){
             val args: Bundle? = arguments
             val position: Int? = Objects.requireNonNull(args)?.getInt("position")
-            val recyclerViewAdapter = ShimAdapter()
+            val recyclerViewAdapter = ShimAdapter(presenter)
             val recyclerView: RecyclerView = view.findViewById(R.id.shim_recycler_view)
             recyclerView.adapter = recyclerViewAdapter
 
@@ -73,7 +70,7 @@ class ShimFragment : BaseFragment(), ShimContract.View {
             presenter.updateRecyclerViewData(recyclerViewAdapter, position)
         }
 
-        class ShimAdapter() : RecyclerView.Adapter<ShimAdapter.ViewHolder>(){
+        class ShimAdapter(private val presenter: ShimContract.Presenter) : RecyclerView.Adapter<ShimAdapter.ViewHolder>(){
             private lateinit var shimList : ArrayList<Shim>
             private var tabPosition : Int? = null
 
@@ -91,12 +88,13 @@ class ShimFragment : BaseFragment(), ShimContract.View {
                     shimTitle.text = shim.title
                 }
                 holder.shimPlayButton.setOnClickListener{
-                    val mediaSource = ProgressiveMediaSource.Factory(DefaultHttpDataSourceFactory(R.string.app_name.toString()))
-                        .createMediaSource(Uri.parse(shim.src))
-                    MainActivity.mainPlayer?.prepare(mediaSource)
-                    MainActivity.mainPlayer?.playWhenReady = true
-                    mainPlayerThumbnail = shim.src
-                    mainPlayerTitle = shim.title
+                    presenter.playShim(shim)
+                    PlayerEventBus.post(
+                        PlayerData(
+                            shim.title.toString(),
+                            shim.thumbnail.toString()
+                        )
+                    )
                 }
             }
 

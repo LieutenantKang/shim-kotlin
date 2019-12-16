@@ -17,7 +17,7 @@
         android:theme="@style/FullScreenTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".view.activity.player.PlayerActivity">
+        <activity android:name=".view.activity.detail.DetailActivity">
         </activity>
         <activity android:name=".view.activity.login.LoginActivity">
             <intent-filter>

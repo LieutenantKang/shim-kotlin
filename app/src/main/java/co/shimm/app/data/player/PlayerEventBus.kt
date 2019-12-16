@@ -1,9 +1,9 @@
-package co.shimm.app.data
+package co.shimm.app.data.player
 
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 
-object EventBus {
+object PlayerEventBus {
     val publisher : PublishSubject<Any> = PublishSubject.create()
 
     inline fun <reified T> subscribe(): Observable<T>{

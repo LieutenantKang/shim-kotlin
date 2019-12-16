@@ -7,14 +7,14 @@ import android.view.View.VISIBLE
 import android.widget.TextView
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
-import co.shimm.app.data.EventBus
-import co.shimm.app.data.PlayerData
-import co.shimm.app.view.activity.player.PlayerActivity
+import co.shimm.app.data.player.Player.mainPlayer
+import co.shimm.app.data.player.PlayerEventBus
+import co.shimm.app.data.player.PlayerData
+import co.shimm.app.view.activity.detail.DetailActivity
 import co.shimm.app.view.fragment.home.HomeFragment
 import co.shimm.app.view.fragment.music.MusicFragment
 import co.shimm.app.view.fragment.shim.ShimFragment
 import com.google.android.exoplayer2.ExoPlayerFactory
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -26,15 +26,9 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
     override val layoutRes: Int
         get() = R.layout.activity_main
 
-    lateinit var disposable: Disposable
-    lateinit var customTitle : TextView
-    lateinit var mainPlayerView : PlayerControlView
-
-    companion object{
-        var mainPlayer: SimpleExoPlayer? = null
-        var mainPlayerThumbnail : String? = null
-        var mainPlayerTitle : String ? = null
-    }
+    private lateinit var disposable: Disposable
+    private lateinit var customTitle : TextView
+    private lateinit var mainPlayerView : PlayerControlView
 
     override fun initView() {
         presenter = MainPresenter(this@MainActivity, this)
@@ -44,13 +38,6 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
 
         customTitle = custom_player_title
         mainPlayerView = main_player
-        mainPlayerView.visibility = VISIBLE
-
-        disposable = EventBus.subscribe<PlayerData>()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                customTitle.text = it.playerTitle
-            }
 
         initializePlayer()
 
@@ -60,6 +47,13 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
         val fragmentHome = HomeFragment()
         supportFragmentManager.beginTransaction().replace(R.id.main_frame_layout,fragmentHome).commitAllowingStateLoss()
         bottomNavigationView.setOnNavigationItemSelectedListener(this)
+
+        disposable = PlayerEventBus.subscribe<PlayerData>()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                mainPlayerView.visibility = VISIBLE
+                customTitle.text = it.playerTitle
+            }
     }
 
     override fun onDestroy() {
@@ -70,7 +64,7 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
     override fun onClick(v: View) {
         when(v.id){
             R.id.main_player -> {
-                val intent = Intent(this@MainActivity, PlayerActivity::class.java)
+                val intent = Intent(this@MainActivity, DetailActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -98,7 +92,7 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
 
     override fun isViewActive(): Boolean = checkActive()
 
-    fun initializePlayer(){
+    private fun initializePlayer(){
         if(mainPlayer == null){
             mainPlayer = ExoPlayerFactory.newSimpleInstance(this)
             main_player.player = mainPlayer

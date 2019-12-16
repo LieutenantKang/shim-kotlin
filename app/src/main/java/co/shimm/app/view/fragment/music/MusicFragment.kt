@@ -15,20 +15,15 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import co.shimm.app.R
 import co.shimm.app.base.BaseFragment
-import co.shimm.app.data.EventBus
-import co.shimm.app.data.PlayerData
+import co.shimm.app.data.player.PlayerEventBus
+import co.shimm.app.data.player.PlayerData
 import co.shimm.app.data.room.Music
-import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayer
-import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayerThumbnail
-import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayerTitle
 import com.bumptech.glide.Glide
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.card_music.view.*
 import java.util.*
 
-class MusicFragment() : BaseFragment(), MusicContract.View {
+class MusicFragment : BaseFragment(), MusicContract.View {
     override val layoutRes: Int
     get() = R.layout.fragment_music
 
@@ -66,7 +61,7 @@ class MusicFragment() : BaseFragment(), MusicContract.View {
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             val args: Bundle? = arguments
             val position: Int? = Objects.requireNonNull(args)?.getInt("position")
-            val recyclerViewAdapter = MusicAdapter()
+            val recyclerViewAdapter = MusicAdapter(presenter)
             val recyclerView : RecyclerView = view.findViewById(R.id.music_recycler_view)
             recyclerView.adapter = recyclerViewAdapter
 
@@ -74,7 +69,7 @@ class MusicFragment() : BaseFragment(), MusicContract.View {
             presenter.updateRecyclerViewData(recyclerViewAdapter,position)
         }
 
-        class MusicAdapter : RecyclerView.Adapter<MusicAdapter.ViewHolder>() {
+        class MusicAdapter(private val presenter: MusicContract.Presenter) : RecyclerView.Adapter<MusicAdapter.ViewHolder>() {
             private lateinit var musicList : ArrayList<Music>
             private var tabPosition: Int? = null
 
@@ -92,16 +87,14 @@ class MusicFragment() : BaseFragment(), MusicContract.View {
                     musicTitle.text = music.title
                 }
 
-
-
                 holder.musicPlayButton.setOnClickListener {
-                    val mediaSource = ProgressiveMediaSource.Factory(DefaultHttpDataSourceFactory(R.string.app_name.toString()))
-                        .createMediaSource(Uri.parse(music.src))
-                    mainPlayer?.prepare(mediaSource)
-                    mainPlayer?.playWhenReady = true
-                    mainPlayerThumbnail = music.src
-                    mainPlayerTitle = music.title
-                    EventBus.post(PlayerData(music.title.toString()))
+                    presenter.playMusic(music)
+                    PlayerEventBus.post(
+                        PlayerData(
+                            music.title.toString(),
+                            music.thumbnail.toString()
+                        )
+                    )
                 }
             }
 
