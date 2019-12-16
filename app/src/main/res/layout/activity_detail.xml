@@ -7,9 +7,10 @@
     tools:context="co.shimm.app.view.activity.detail.DetailActivity">
 
     <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/player_player"
+        android:id="@+id/detail_player"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:controller_layout_id="@layout/custom_player"/>
+        app:controller_layout_id="@layout/custom_detail_player"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

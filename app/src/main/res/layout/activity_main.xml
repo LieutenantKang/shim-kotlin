@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/main_navigation_view"
-        app:controller_layout_id="@layout/custom_player_control"
+        app:controller_layout_id="@layout/custom_main_player"
         android:visibility="invisible"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

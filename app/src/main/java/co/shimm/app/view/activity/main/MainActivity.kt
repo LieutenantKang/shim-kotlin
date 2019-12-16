@@ -20,14 +20,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.custom_player_control.*
+import kotlinx.android.synthetic.main.custom_main_player.*
 
 class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
     override val layoutRes: Int
         get() = R.layout.activity_main
 
     private lateinit var disposable: Disposable
-    private lateinit var customTitle : TextView
+    private lateinit var mainPlayerTitle : TextView
     private lateinit var mainPlayerView : PlayerControlView
 
     override fun initView() {
@@ -36,7 +36,7 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
 
         presenter.fetchData()
 
-        customTitle = custom_player_title
+        mainPlayerTitle = custom_player_title
         mainPlayerView = main_player
 
         initializePlayer()
@@ -52,7 +52,7 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 mainPlayerView.visibility = VISIBLE
-                customTitle.text = it.playerTitle
+                mainPlayerTitle.text = it.playerTitle
             }
     }
 

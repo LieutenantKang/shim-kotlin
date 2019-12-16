@@ -40,7 +40,7 @@ class ShimModel(context: Context) {
             .createMediaSource(Uri.parse(shim.src))
         Player.mainPlayer?.prepare(mediaSource)
         Player.mainPlayer?.playWhenReady = true
-        Player.mainPlayerThumbnail = shim.src
-        Player.mainPlayerTitle = shim.title
+        Player.playerThumbnail = shim.thumbnail
+        Player.playerTitle = shim.title
     }
 }

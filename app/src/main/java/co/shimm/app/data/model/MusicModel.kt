@@ -40,7 +40,7 @@ class MusicModel(context: Context) {
             .createMediaSource(Uri.parse(music.src))
         Player.mainPlayer?.prepare(mediaSource)
         Player.mainPlayer?.playWhenReady = true
-        Player.mainPlayerThumbnail = music.src
-        Player.mainPlayerTitle = music.title
+        Player.playerThumbnail = music.thumbnail
+        Player.playerTitle = music.title
     }
 }

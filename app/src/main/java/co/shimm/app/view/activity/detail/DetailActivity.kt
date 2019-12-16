@@ -6,31 +6,32 @@ import android.widget.TextView
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
 import co.shimm.app.data.player.Player.mainPlayer
-import co.shimm.app.data.player.Player.mainPlayerThumbnail
-import co.shimm.app.data.player.Player.mainPlayerTitle
+import co.shimm.app.data.player.Player.playerThumbnail
+import co.shimm.app.data.player.Player.playerTitle
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.custom_player.*
+import kotlinx.android.synthetic.main.custom_detail_player.*
 
 class DetailActivity : BaseActivity(), DetailContract.View, View.OnClickListener {
     override val layoutRes: Int
         get() = R.layout.activity_detail
 
-    private lateinit var customTestTitle : TextView
-    private lateinit var customTestThumbnail : ImageView
+    private lateinit var detailPlayerTitle : TextView
+    private lateinit var detailPlayerThumbnail : ImageView
 
     override fun initView() {
         presenter = DetailPresenter(this@DetailActivity, this)
         presenter.start()
 
-        player_player.player = mainPlayer
+        detail_player.player = mainPlayer
+        detail_player.controllerShowTimeoutMs = 0
 
-        customTestTitle = player_title
-        customTestThumbnail = findViewById<View>(R.id.player_thumbnail) as ImageView
+        detailPlayerTitle = detail_player_title
+        detailPlayerThumbnail = findViewById<View>(R.id.detail_player_thumbnail) as ImageView
 
-        customTestTitle.text = mainPlayerTitle
-        Glide.with(this).load(mainPlayerThumbnail)
-            .centerCrop().into(customTestThumbnail)
+        detailPlayerTitle.text = playerTitle
+        Glide.with(applicationContext).load(playerThumbnail)
+            .centerCrop().into(detailPlayerThumbnail)
     }
 
     override lateinit var presenter: DetailContract.Presenter
