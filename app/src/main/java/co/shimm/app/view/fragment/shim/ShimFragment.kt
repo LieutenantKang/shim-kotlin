@@ -17,7 +17,6 @@ import co.shimm.app.R
 import co.shimm.app.base.BaseFragment
 import co.shimm.app.data.room.Shim
 import co.shimm.app.view.activity.main.MainActivity
-import co.shimm.app.view.activity.main.MainActivity.Companion.changeTitle
 import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayerThumbnail
 import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayerTitle
 import com.bumptech.glide.Glide
@@ -96,7 +95,6 @@ class ShimFragment : BaseFragment(), ShimContract.View {
                         .createMediaSource(Uri.parse(shim.src))
                     MainActivity.mainPlayer?.prepare(mediaSource)
                     MainActivity.mainPlayer?.playWhenReady = true
-                    changeTitle(shim.title.toString())
                     mainPlayerThumbnail = shim.src
                     mainPlayerTitle = shim.title
                 }

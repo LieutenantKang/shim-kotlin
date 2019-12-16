@@ -15,8 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import co.shimm.app.R
 import co.shimm.app.base.BaseFragment
+import co.shimm.app.data.EventBus
+import co.shimm.app.data.PlayerData
 import co.shimm.app.data.room.Music
-import co.shimm.app.view.activity.main.MainActivity.Companion.changeTitle
 import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayer
 import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayerThumbnail
 import co.shimm.app.view.activity.main.MainActivity.Companion.mainPlayerTitle
@@ -27,7 +28,7 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.card_music.view.*
 import java.util.*
 
-class MusicFragment : BaseFragment(), MusicContract.View {
+class MusicFragment() : BaseFragment(), MusicContract.View {
     override val layoutRes: Int
     get() = R.layout.fragment_music
 
@@ -98,9 +99,9 @@ class MusicFragment : BaseFragment(), MusicContract.View {
                         .createMediaSource(Uri.parse(music.src))
                     mainPlayer?.prepare(mediaSource)
                     mainPlayer?.playWhenReady = true
-                    changeTitle(music.title.toString())
                     mainPlayerThumbnail = music.src
                     mainPlayerTitle = music.title
+                    EventBus.post(PlayerData(music.title.toString()))
                 }
             }
 
