@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/detail_player_thumbnail"
+        android:id="@+id/music_player_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/card_image_sample"
@@ -18,11 +18,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toTopOf="@id/detail_player_title"
+        app:layout_constraintBottom_toTopOf="@id/music_player_title"
         app:played_color="@color/colorAccent" />
 
     <TextView
-        android:id="@+id/detail_player_title"
+        android:id="@+id/music_player_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"

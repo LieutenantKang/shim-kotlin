@@ -1,8 +1,8 @@
-package co.shimm.app.view.activity.detail
+package co.shimm.app.view.activity.musicplayer
 
 import co.shimm.app.base.BaseContract
 
-interface DetailContract {
+interface MusicPlayerContract {
     interface View: BaseContract.BaseView<Presenter>{
     }
 

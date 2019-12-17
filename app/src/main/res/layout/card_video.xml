@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/card_shim_thumbnail"
+            android:id="@+id/card_video_thumbnail"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/card_shim_play_button"
+            android:id="@+id/card_video_play_button"
             android:layout_width="48dp"
             android:layout_height="48dp"
             app:srcCompat="@drawable/ic_play_arrow_white_64dp"
@@ -33,7 +33,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/card_shim_duration"
+            android:id="@+id/card_video_duration"
             style="@style/TextAppearance.MaterialComponents.Caption"
             android:layout_width="40dp"
             android:layout_height="24dp"
@@ -42,11 +42,11 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="#FFFFDE"
-            app:layout_constraintBottom_toTopOf="@id/card_shim_title"
+            app:layout_constraintBottom_toTopOf="@+id/card_video_title"
             app:layout_constraintRight_toRightOf="parent"/>
 
         <TextView
-            android:id="@+id/card_shim_title"
+            android:id="@+id/card_video_title"
             style="@style/TextAppearance.MaterialComponents.Subtitle1"
             android:layout_width="match_parent"
             android:layout_height="36dp"

@@ -2,7 +2,7 @@ package co.shimm.app.data.retrofit
 
 import co.shimm.app.data.room.response.LoginResponse
 import co.shimm.app.data.room.response.MusicResponse
-import co.shimm.app.data.room.response.ShimResponse
+import co.shimm.app.data.room.response.VideoResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -15,6 +15,6 @@ interface RetrofitService {
     @GET("/musics/")
     fun getMusics() : Call<MusicResponse>
 
-    @GET("/shims/")
-    fun getShims() : Call<ShimResponse>
+    @GET("/videos/")
+    fun getShims() : Call<VideoResponse>
 }

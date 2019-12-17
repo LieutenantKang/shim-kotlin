@@ -10,10 +10,10 @@ import co.shimm.app.base.BaseActivity
 import co.shimm.app.data.player.Player.mainPlayer
 import co.shimm.app.data.player.PlayerEventBus
 import co.shimm.app.data.player.PlayerData
-import co.shimm.app.view.activity.detail.DetailActivity
+import co.shimm.app.view.activity.musicplayer.MusicPlayerActivity
 import co.shimm.app.view.fragment.home.HomeFragment
 import co.shimm.app.view.fragment.music.MusicFragment
-import co.shimm.app.view.fragment.shim.ShimFragment
+import co.shimm.app.view.fragment.video.VideoFragment
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -36,7 +36,7 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
 
         presenter.fetchData()
 
-        mainPlayerTitle = custom_player_title
+        mainPlayerTitle = main_player_title
         mainPlayerView = main_player
 
         initializePlayer()
@@ -64,7 +64,7 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
     override fun onClick(v: View) {
         when(v.id){
             R.id.main_player -> {
-                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                val intent = Intent(this@MainActivity, MusicPlayerActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -77,7 +77,7 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
                 supportFragmentManager.beginTransaction().replace(R.id.main_frame_layout,fragmentHome).commitAllowingStateLoss()
             }
             R.id.navigation_shim ->{
-                val fragmentShim = ShimFragment()
+                val fragmentShim = VideoFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.main_frame_layout,fragmentShim).commitAllowingStateLoss()
             }
             R.id.navigation_music ->{

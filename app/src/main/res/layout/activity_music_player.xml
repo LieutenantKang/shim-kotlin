@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="co.shimm.app.view.activity.detail.DetailActivity">
+    tools:context="co.shimm.app.view.activity.musicplayer.MusicPlayerActivity">
 
     <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/detail_player"
+        android:id="@+id/music_player_player"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:controller_layout_id="@layout/custom_detail_player"
+        app:controller_layout_id="@layout/custom_music_player"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

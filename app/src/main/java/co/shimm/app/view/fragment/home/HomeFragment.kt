@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import co.shimm.app.R
 import co.shimm.app.base.BaseFragment
-import co.shimm.app.data.room.Shim
+import co.shimm.app.data.room.Video
 import kotlinx.android.synthetic.main.card_home.view.*
 
 class HomeFragment : BaseFragment(), HomeContract.View {
@@ -34,7 +34,7 @@ class HomeFragment : BaseFragment(), HomeContract.View {
     override fun isViewActive(): Boolean = checkActive()
 
     class HomeAdapter: RecyclerView.Adapter<HomeAdapter.ViewHolder>(){
-        private lateinit var homeList : ArrayList<Shim>
+        private lateinit var homeList : ArrayList<Video>
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.card_home,parent,false)
@@ -53,7 +53,7 @@ class HomeFragment : BaseFragment(), HomeContract.View {
 
         override fun getItemCount() = homeList.size
 
-        fun setItem(homeList : ArrayList<Shim>){
+        fun setItem(homeList : ArrayList<Video>){
             this.homeList = homeList
         }
 

@@ -17,7 +17,7 @@
         app:played_color="@color/colorAccent" />
 
     <TextView
-        android:id="@+id/custom_player_title"
+        android:id="@+id/main_player_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"

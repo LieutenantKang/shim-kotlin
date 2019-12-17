@@ -1,6 +1,5 @@
-package co.shimm.app.view.fragment.shim
+package co.shimm.app.view.fragment.video
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,26 +16,26 @@ import co.shimm.app.R
 import co.shimm.app.base.BaseFragment
 import co.shimm.app.data.player.PlayerData
 import co.shimm.app.data.player.PlayerEventBus
-import co.shimm.app.data.room.Shim
+import co.shimm.app.data.room.Video
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.card_shim.view.*
+import kotlinx.android.synthetic.main.card_video.view.*
 import java.util.*
 
-class ShimFragment : BaseFragment(), ShimContract.View {
+class VideoFragment : BaseFragment(), VideoContract.View {
     override val layoutRes: Int
-        get() = R.layout.fragment_shim
+        get() = R.layout.fragment_video
 
-    override lateinit var presenter: ShimContract.Presenter
+    override lateinit var presenter: VideoContract.Presenter
     var recyclerViews = arrayOf<RecyclerView?>(null, null, null, null, null)
 
     override fun setView(view: View?, savedInstanceState: Bundle?, arguments: Bundle?) {
-        presenter = ShimPresenter(this@ShimFragment, requireContext())
+        presenter = VideoPresenter(this@VideoFragment, requireContext())
 
         val pagerAdapter = PagerAdapter(childFragmentManager)
-        val pager : ViewPager? = view?.findViewById(R.id.shim_pager)
+        val pager : ViewPager? = view?.findViewById(R.id.video_pager)
         pager?.adapter = pagerAdapter
-        val tabLayout : TabLayout? = view?.findViewById(R.id.shim_tab)
+        val tabLayout : TabLayout? = view?.findViewById(R.id.video_tab)
         tabLayout?.setupWithViewPager(pager)
         tabLayout?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
             override fun onTabReselected(tab: TabLayout.Tab?) {}
@@ -53,61 +52,55 @@ class ShimFragment : BaseFragment(), ShimContract.View {
 
     override fun isViewActive(): Boolean = checkActive()
 
-    class Page(private val presenter: ShimContract.Presenter, private val recyclerViews: Array<RecyclerView?>): Fragment(){
+    class Page(private val presenter: VideoContract.Presenter, private val recyclerViews: Array<RecyclerView?>): Fragment(){
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-            return inflater.inflate(R.layout.fragment_shim_page, container, false)
+            return inflater.inflate(R.layout.fragment_video_page, container, false)
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?){
             val args: Bundle? = arguments
             val position: Int? = Objects.requireNonNull(args)?.getInt("position")
             val recyclerViewAdapter = ShimAdapter(presenter)
-            val recyclerView: RecyclerView = view.findViewById(R.id.shim_recycler_view)
+            val recyclerView: RecyclerView = view.findViewById(R.id.video_recycler_view)
             recyclerView.adapter = recyclerViewAdapter
 
             recyclerViews[position!!] = recyclerView
             presenter.updateRecyclerViewData(recyclerViewAdapter, position)
         }
 
-        class ShimAdapter(private val presenter: ShimContract.Presenter) : RecyclerView.Adapter<ShimAdapter.ViewHolder>(){
-            private lateinit var shimList : ArrayList<Shim>
+        class ShimAdapter(private val presenter: VideoContract.Presenter) : RecyclerView.Adapter<ShimAdapter.ViewHolder>(){
+            private lateinit var videoList : ArrayList<Video>
             private var tabPosition : Int? = null
 
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-                val view: View = LayoutInflater.from(parent.context).inflate(R.layout.card_shim,parent,false)
+                val view: View = LayoutInflater.from(parent.context).inflate(R.layout.card_video,parent,false)
                 return ViewHolder(view)
             }
 
             override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-                val shim = shimList[position]
-                Glide.with(holder.itemView.context).load(shim.thumbnail)
-                    .error(R.drawable.card_image_sample).into(holder.shimThumbnail)
+                val video = videoList[position]
+                Glide.with(holder.itemView.context).load(video.thumbnail)
+                    .error(R.drawable.card_image_sample).into(holder.videoThumbnail)
 
                 with(holder){
-                    shimTitle.text = shim.title
+                    videoTitle.text = video.title
                 }
-                holder.shimPlayButton.setOnClickListener{
-                    presenter.playShim(shim)
-                    PlayerEventBus.post(
-                        PlayerData(
-                            shim.title.toString(),
-                            shim.thumbnail.toString()
-                        )
-                    )
+                holder.videoPlayButton.setOnClickListener{
+                    presenter.playVideo(video)
                 }
             }
 
-            override fun getItemCount() = shimList.size
+            override fun getItemCount() = videoList.size
 
-            fun setItem(shimList : ArrayList<Shim>){ this.shimList = shimList }
+            fun setItem(videoList : ArrayList<Video>){ this.videoList = videoList }
 
             fun setTabPosition(tabPosition : Int) { this.tabPosition = tabPosition }
 
             inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-                val shimTitle : TextView = view.card_shim_title
-                val shimThumbnail : ImageView = view.card_shim_thumbnail
-                val shimPlayButton : ImageButton = view.card_shim_play_button
+                val videoTitle : TextView = view.card_video_title
+                val videoThumbnail : ImageView = view.card_video_thumbnail
+                val videoPlayButton : ImageButton = view.card_video_play_button
             }
         }
     }
