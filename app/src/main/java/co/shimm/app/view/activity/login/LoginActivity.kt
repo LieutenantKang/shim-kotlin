@@ -6,6 +6,7 @@ import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
 import co.shimm.app.const.Const.Login.REQUEST_CODE
 import co.shimm.app.view.activity.main.MainActivity
+import co.shimm.app.view.activity.payment.PaymentActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task

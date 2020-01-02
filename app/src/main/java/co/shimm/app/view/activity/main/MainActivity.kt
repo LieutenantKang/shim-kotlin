@@ -7,12 +7,12 @@ import android.view.View.VISIBLE
 import android.widget.TextView
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
-import co.shimm.app.data.player.Player.mainPlayer
+import co.shimm.app.data.player.ShimPlayer.shimPlayer
 import co.shimm.app.data.player.PlayerEventBus
 import co.shimm.app.data.player.PlayerData
-import co.shimm.app.view.activity.musicplayer.MusicPlayerActivity
+import co.shimm.app.view.activity.audioplayer.AudioPlayerActivity
 import co.shimm.app.view.fragment.home.HomeFragment
-import co.shimm.app.view.fragment.music.MusicFragment
+import co.shimm.app.view.fragment.audio.AudioFragment
 import co.shimm.app.view.fragment.video.VideoFragment
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.ui.PlayerControlView
@@ -64,7 +64,7 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
     override fun onClick(v: View) {
         when(v.id){
             R.id.main_player -> {
-                val intent = Intent(this@MainActivity, MusicPlayerActivity::class.java)
+                val intent = Intent(this@MainActivity, AudioPlayerActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -81,7 +81,7 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
                 supportFragmentManager.beginTransaction().replace(R.id.main_frame_layout,fragmentShim).commitAllowingStateLoss()
             }
             R.id.navigation_music ->{
-                val fragmentMusic = MusicFragment()
+                val fragmentMusic = AudioFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.main_frame_layout,fragmentMusic).commitAllowingStateLoss()
             }
         }
@@ -93,9 +93,9 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
     override fun isViewActive(): Boolean = checkActive()
 
     private fun initializePlayer(){
-        if(mainPlayer == null){
-            mainPlayer = ExoPlayerFactory.newSimpleInstance(this)
-            main_player.player = mainPlayer
+        if(shimPlayer == null){
+            shimPlayer = ExoPlayerFactory.newSimpleInstance(this)
+            main_player.player = shimPlayer
             main_player.showTimeoutMs = 0
         }
     }

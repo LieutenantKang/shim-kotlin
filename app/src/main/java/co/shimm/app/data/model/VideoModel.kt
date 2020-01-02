@@ -3,25 +3,26 @@ package co.shimm.app.data.model
 import android.content.Context
 import android.net.Uri
 import co.shimm.app.R
-import co.shimm.app.data.player.Player
-import co.shimm.app.data.room.Video
-import co.shimm.app.data.room.VideoDao
+import co.shimm.app.data.player.ShimPlayer
+import co.shimm.app.data.room.entity.ShimVideo
+import co.shimm.app.data.room.dao.ShimVideoPlaylistDao
 import co.shimm.app.data.room.ShimDatabase
+import co.shimm.app.data.room.entity.ShimVideoPlaylist
 import co.shimm.app.view.fragment.video.VideoFragment
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 
 class VideoModel(context: Context) {
-    private val videoDao : VideoDao = ShimDatabase.getInstance(context).videoDao
+    private val shimVideoPlaylistDao : ShimVideoPlaylistDao = ShimDatabase.getInstance(context).shimVideoPlaylistDao
 
-    fun updateRecyclerViewData(adapter: VideoFragment.Page.ShimAdapter, position: Int){
+    fun updateRecyclerViewData(adapter: VideoFragment.Page.VideoPlaylistAdapter, position: Int){
         lateinit var updateThread : Thread
         when(position){
-            0 -> updateThread = Thread { adapter.setItem(videoDao.getAll() as ArrayList<Video>)}
-            1 -> updateThread = Thread { adapter.setItem(videoDao.findByCategory(0) as ArrayList<Video>)}
-            2 -> updateThread = Thread { adapter.setItem(videoDao.findByCategory(1) as ArrayList<Video>)}
-            3 -> updateThread = Thread { adapter.setItem(videoDao.findByCategory(2) as ArrayList<Video>)}
-            4 -> updateThread = Thread { adapter.setItem(videoDao.findByCategory(2) as ArrayList<Video>)}
+            0 -> updateThread = Thread { adapter.setItem(shimVideoPlaylistDao.getAll() as ArrayList<ShimVideoPlaylist>)}
+            1 -> updateThread = Thread { adapter.setItem(shimVideoPlaylistDao.findByCategory(1) as ArrayList<ShimVideoPlaylist>)}
+            2 -> updateThread = Thread { adapter.setItem(shimVideoPlaylistDao.findByCategory(2) as ArrayList<ShimVideoPlaylist>)}
+            3 -> updateThread = Thread { adapter.setItem(shimVideoPlaylistDao.findByCategory(1) as ArrayList<ShimVideoPlaylist>)}
+            4 -> updateThread = Thread { adapter.setItem(shimVideoPlaylistDao.findByCategory(2) as ArrayList<ShimVideoPlaylist>)}
         }
 
         updateThread.start()
@@ -35,12 +36,12 @@ class VideoModel(context: Context) {
         adapter.setTabPosition(position)
     }
 
-    fun playVideo(video: Video){
+    fun playVideo(shimVideo: ShimVideo){
         val mediaSource = ProgressiveMediaSource.Factory(DefaultHttpDataSourceFactory(R.string.app_name.toString()))
-            .createMediaSource(Uri.parse(video.src))
-        Player.mainPlayer?.prepare(mediaSource)
-        Player.mainPlayer?.playWhenReady = true
-        Player.playerThumbnail = video.thumbnail
-        Player.playerTitle = video.title
+            .createMediaSource(Uri.parse(shimVideo.src))
+        ShimPlayer.shimPlayer?.prepare(mediaSource)
+        ShimPlayer.shimPlayer?.playWhenReady = true
+        ShimPlayer.shimPlayerThumbnail = shimVideo.thumbnail
+        ShimPlayer.shimPlayerTitle = shimVideo.title
     }
 }

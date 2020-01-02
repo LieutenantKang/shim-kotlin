@@ -17,8 +17,10 @@
         android:theme="@style/FullScreenTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".view.activity.musicplayer.MusicPlayerActivity">
-        </activity>
+        <activity android:name=".view.activity.videoplaylist.VideoPlaylistActivity"></activity>
+        <activity android:name=".view.activity.payment.PaymentActivity"></activity>
+        <activity android:name=".view.activity.videoplayer.VideoPlayerActivity" />
+        <activity android:name=".view.activity.audioplayer.AudioPlayerActivity" />
         <activity android:name=".view.activity.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

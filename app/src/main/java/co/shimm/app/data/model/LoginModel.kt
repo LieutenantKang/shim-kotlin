@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import co.shimm.app.const.Const.Login.REQUEST_CODE
+import co.shimm.app.data.user.UserInformation
 import co.shimm.app.data.retrofit.RetrofitGenerator
 import co.shimm.app.data.room.response.LoginResponse
 import co.shimm.app.view.activity.login.LoginContract
@@ -38,6 +39,7 @@ class LoginModel(private val activity: Activity) : LoginContract.Model {
             call.enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     Log.d("success", response.body()?.token.toString())
+                    UserInformation.token = response.body()?.token.toString()
                     loginFinishedListener.onFinished(response.body()?.token.toString())
                 }
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {

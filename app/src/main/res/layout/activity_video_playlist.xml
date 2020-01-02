@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="co.shimm.app.view.activity.musicplayer.MusicPlayerActivity">
+    tools:context="co.shimm.app.view.activity.videoplaylist.VideoPlaylistActivity">
 
-    <com.google.android.exoplayer2.ui.PlayerView
-        android:id="@+id/music_player_player"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/video_playlist_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:controller_layout_id="@layout/custom_music_player"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

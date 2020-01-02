@@ -1,8 +1,8 @@
-package co.shimm.app.view.activity.videoplayer
+package co.shimm.app.view.activity.payment
 
 import co.shimm.app.base.BaseContract
 
-interface VideoPlayerContract {
+interface PaymentContract {
     interface View: BaseContract.BaseView<Presenter>{
     }
 
