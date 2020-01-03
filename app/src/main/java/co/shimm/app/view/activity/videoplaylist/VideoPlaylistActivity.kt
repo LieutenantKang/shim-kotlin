@@ -56,6 +56,7 @@ class VideoPlaylistActivity : BaseActivity(), VideoPlaylistContract.View, View.O
             }
             holder.videoPlayButton.setOnClickListener {
                 val intent = Intent(holder.itemView.context, VideoPlayerActivity::class.java)
+                intent.putExtra("videoSrc", video.src)
                 holder.itemView.context.startActivity(intent)
             }
         }

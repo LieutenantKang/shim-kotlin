@@ -13,7 +13,7 @@ import co.shimm.app.data.room.entity.ShimAudioPlaylist
 import co.shimm.app.data.room.entity.ShimVideo
 import co.shimm.app.data.room.entity.ShimVideoPlaylist
 
-@Database(entities = [ShimVideoPlaylist::class, ShimAudioPlaylist::class, ShimVideo::class, ShimAudio::class], version = 6, exportSchema = false)
+@Database(entities = [ShimVideoPlaylist::class, ShimAudioPlaylist::class, ShimVideo::class, ShimAudio::class], version = 7, exportSchema = false)
 abstract class ShimDatabase : RoomDatabase() {
     abstract val shimVideoPlaylistDao : ShimVideoPlaylistDao
     abstract val shimAudioPlaylistDao : ShimAudioPlaylistDao

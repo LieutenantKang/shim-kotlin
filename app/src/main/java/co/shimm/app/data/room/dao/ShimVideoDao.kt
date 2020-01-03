@@ -8,7 +8,7 @@ import co.shimm.app.data.room.entity.ShimVideo
 
 @Dao
 interface ShimVideoDao {
-    @Query("SELECT * FROM ShimAudio WHERE playlistId = (:listId)")
+    @Query("SELECT * FROM ShimVideo WHERE playlistId = (:listId)")
     fun getVideos(listId: Int) : List<ShimVideo>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
