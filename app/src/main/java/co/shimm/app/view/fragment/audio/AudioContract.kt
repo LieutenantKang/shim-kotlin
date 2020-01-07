@@ -7,7 +7,6 @@ interface AudioContract {
     interface View: BaseContract.BaseView<Presenter>
 
     interface Presenter: BaseContract.BasePresenter{
-        fun updateRecyclerViewData(adapter : AudioFragment.Page.AudioAdapter, position: Int)
-        fun playAudio(shimAudio : ShimAudio)
+        fun updateRecyclerViewData(adapter : AudioFragment.Page.AudioPlaylistAdapter, position: Int)
     }
 }

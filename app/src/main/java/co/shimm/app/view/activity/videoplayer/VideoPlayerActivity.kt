@@ -1,17 +1,10 @@
 package co.shimm.app.view.activity.videoplayer
 
-import android.content.pm.ActivityInfo
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
-import co.shimm.app.data.player.ShimPlayer
 import co.shimm.app.data.player.ShimPlayer.shimPlayer
-import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import kotlinx.android.synthetic.main.activity_video_player.*
@@ -32,6 +25,7 @@ class VideoPlayerActivity : BaseActivity(), VideoPlayerContract.View, View.OnCli
             .createMediaSource(Uri.parse(intent.getStringExtra("videoSrc")))
         shimPlayer?.prepare(mediaSource)
         shimPlayer?.playWhenReady = true
+        // model 로 옮겨야 함
     }
 
     override lateinit var presenter: VideoPlayerContract.Presenter

@@ -11,11 +11,7 @@ class AudioPresenter (private val view: AudioContract.View, context: Context) : 
         view.presenter = this
     }
 
-    override fun updateRecyclerViewData(adapter: AudioFragment.Page.AudioAdapter, position: Int) {
+    override fun updateRecyclerViewData(adapter: AudioFragment.Page.AudioPlaylistAdapter, position: Int) {
         audioModel.updateRecyclerViewData(adapter, position)
-    }
-
-    override fun playAudio(shimAudio: ShimAudio) {
-        audioModel.playAudio(shimAudio)
     }
 }

@@ -17,10 +17,12 @@
         android:theme="@style/FullScreenTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".view.activity.videoplaylist.VideoPlaylistActivity"></activity>
-        <activity android:name=".view.activity.payment.PaymentActivity"></activity>
-        <activity android:name=".view.activity.videoplayer.VideoPlayerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
+        <activity android:name=".view.activity.audioplaylist.AudioPlaylistActivity"></activity>
+        <activity android:name=".view.activity.videoplaylist.VideoPlaylistActivity" />
+        <activity android:name=".view.activity.payment.PaymentActivity" />
+        <activity
+            android:name=".view.activity.videoplayer.VideoPlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity android:name=".view.activity.audioplayer.AudioPlayerActivity" />
         <activity android:name=".view.activity.login.LoginActivity">
             <intent-filter>

@@ -1,5 +1,6 @@
 package co.shimm.app.view.fragment.audio
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -17,9 +19,11 @@ import co.shimm.app.base.BaseFragment
 import co.shimm.app.data.player.PlayerEventBus
 import co.shimm.app.data.player.PlayerData
 import co.shimm.app.data.room.entity.ShimAudio
+import co.shimm.app.data.room.entity.ShimAudioPlaylist
+import co.shimm.app.view.activity.audioplaylist.AudioPlaylistActivity
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.card_audio.view.*
+import kotlinx.android.synthetic.main.card_audio_playlist.view.*
 import java.util.*
 
 class AudioFragment : BaseFragment(), AudioContract.View {
@@ -45,7 +49,7 @@ class AudioFragment : BaseFragment(), AudioContract.View {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val position : Int? = tab?.position
                 val recyclerView : RecyclerView? = recyclerViews[position!!]
-                presenter.updateRecyclerViewData(recyclerView?.adapter as Page.AudioAdapter, position)
+                presenter.updateRecyclerViewData(recyclerView?.adapter as Page.AudioPlaylistAdapter, position)
             }
         })
     }
@@ -60,7 +64,7 @@ class AudioFragment : BaseFragment(), AudioContract.View {
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             val args: Bundle? = arguments
             val position: Int? = Objects.requireNonNull(args)?.getInt("position")
-            val recyclerViewAdapter = AudioAdapter(presenter)
+            val recyclerViewAdapter = AudioPlaylistAdapter(presenter)
             val recyclerView : RecyclerView = view.findViewById(R.id.audio_recycler_view)
             recyclerView.adapter = recyclerViewAdapter
 
@@ -68,45 +72,50 @@ class AudioFragment : BaseFragment(), AudioContract.View {
             presenter.updateRecyclerViewData(recyclerViewAdapter,position)
         }
 
-        class AudioAdapter(private val presenter: AudioContract.Presenter) : RecyclerView.Adapter<AudioAdapter.ViewHolder>() {
-            private lateinit var shimAudioList : ArrayList<ShimAudio>
+        class AudioPlaylistAdapter(private val presenter: AudioContract.Presenter) : RecyclerView.Adapter<AudioPlaylistAdapter.ViewHolder>() {
+            private lateinit var shimAudioPlaylist : ArrayList<ShimAudioPlaylist>
             private var tabPosition: Int? = null
 
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-                val view: View = LayoutInflater.from(parent.context).inflate(R.layout.card_audio,parent,false)
+                val view: View = LayoutInflater.from(parent.context).inflate(R.layout.card_audio_playlist,parent,false)
                 return ViewHolder(view)
             }
 
             override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-                val audio = shimAudioList[position]
-                Glide.with(holder.itemView.context).load(audio.thumbnail)
+                val audioPlaylist = shimAudioPlaylist[position]
+                Glide.with(holder.itemView.context).load(audioPlaylist.thumbnail)
                     .error(R.drawable.card_image_sample).into(holder.audioThumbnail)
 
                 with(holder){
-                    audioTitle.text = audio.title
+                    audioTitle.text = audioPlaylist.title
+                }
+                holder.audioPlaylistLayout.setOnClickListener {
+                    val intent = Intent(holder.itemView.context, AudioPlaylistActivity::class.java)
+                    intent.putExtra("listId", audioPlaylist.id)
+                    holder.itemView.context.startActivity(intent)
                 }
 
-                holder.audioPlayButton.setOnClickListener {
-                    presenter.playAudio(audio)
-                    PlayerEventBus.post(
-                        PlayerData(
-                            audio.title.toString(),
-                            audio.thumbnail.toString()
-                        )
-                    )
-                }
+//                holder.audioPlayButton.setOnClickListener {
+//                    presenter.playAudio(audioPlaylist)
+//                    PlayerEventBus.post(
+//                        PlayerData(
+//                            audioPlaylist.title.toString(),
+//                            audioPlaylist.thumbnail.toString()
+//                        )
+//                    ) -> playlist Activity 로 옮겨야 함
+//                }
             }
 
-            override fun getItemCount() = shimAudioList.size
+            override fun getItemCount() = shimAudioPlaylist.size
 
-            fun setItem(shimAudioList : ArrayList<ShimAudio>) { this.shimAudioList = shimAudioList }
+            fun setItem(shimAudioList : ArrayList<ShimAudioPlaylist>) { this.shimAudioPlaylist = shimAudioList }
 
             fun setTabPosition(tabPosition : Int) { this.tabPosition = tabPosition }
 
             inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-                val audioTitle : TextView = view.card_audio_title
-                val audioThumbnail : ImageView = view.card_audio_thumbnail
-                val audioPlayButton : ImageButton = view.card_audio_play_button
+                val audioTitle : TextView = view.card_audio_playlist_title
+                val audioThumbnail : ImageView = view.card_audio_playlist_thumbnail
+                val audioPlaylistLayout : ConstraintLayout = view.card_audio_playlist_layout
             }
         }
     }

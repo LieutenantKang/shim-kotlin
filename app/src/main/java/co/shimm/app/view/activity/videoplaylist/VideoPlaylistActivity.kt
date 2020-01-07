@@ -33,9 +33,7 @@ class VideoPlaylistActivity : BaseActivity(), VideoPlaylistContract.View, View.O
 
     override lateinit var presenter: VideoPlaylistContract.Presenter
 
-    override fun onClick(v: View?) {
-
-    }
+    override fun onClick(v: View?) { }
 
     override fun isViewActive(): Boolean = checkActive()
 
