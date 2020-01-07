@@ -1,10 +1,14 @@
 package co.shimm.app.view.activity.audioplayer
 
+import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
+import co.shimm.app.data.player.PlayerData
+import co.shimm.app.data.player.PlayerEventBus
 import co.shimm.app.data.player.ShimPlayer.shimPlayer
 import co.shimm.app.data.player.ShimPlayer.shimPlayerThumbnail
 import co.shimm.app.data.player.ShimPlayer.shimPlayerTitle
@@ -18,6 +22,8 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
 
     private lateinit var audioPlayerTitle : TextView
     private lateinit var audioPlayerThumbnail : ImageView
+    private lateinit var audioPlayerForwardButton : ImageButton
+    private lateinit var audioPlayerRewindButton : ImageButton
 
     override fun initView() {
         presenter = AudioPlayerPresenter(this@AudioPlayerActivity, this)
@@ -28,16 +34,40 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
 
         audioPlayerTitle = audio_player_title
         audioPlayerThumbnail = findViewById<View>(R.id.audio_player_thumbnail) as ImageView
+        audioPlayerForwardButton = exo_forward
+        audioPlayerRewindButton = exo_rewind
 
+        audioPlayerForwardButton.setOnClickListener(this)
+        audioPlayerRewindButton.setOnClickListener(this)
+
+        updateUI()
+    }
+
+    private fun updateUI(){
         audioPlayerTitle.text = shimPlayerTitle
         Glide.with(applicationContext).load(shimPlayerThumbnail)
             .centerCrop().into(audioPlayerThumbnail)
+        PlayerEventBus.post(
+            PlayerData(
+                shimPlayerTitle.toString(),
+                shimPlayerThumbnail.toString()
+            )
+        )
     }
 
     override lateinit var presenter: AudioPlayerContract.Presenter
 
     override fun onClick(v: View) {
-
+        when(v.id){
+            R.id.exo_forward -> {
+                presenter.playNext()
+                updateUI()
+            }
+            R.id.exo_rewind -> {
+                presenter.playPrevious()
+                updateUI()
+            }
+        }
     }
 
     override fun isViewActive(): Boolean = checkActive()

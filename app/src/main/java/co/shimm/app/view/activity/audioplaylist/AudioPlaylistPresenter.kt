@@ -15,7 +15,7 @@ class AudioPlaylistPresenter(private val view: AudioPlaylistContract.View, conte
         model.initRecyclerViewData(adapter, listId)
     }
 
-    override fun playAudio(shimAudio: ShimAudio) {
-        model.playAudio(shimAudio)
+    override fun playAudio(shimAudio: ShimAudio, index: Int) {
+        model.playAudio(shimAudio, index)
     }
 }

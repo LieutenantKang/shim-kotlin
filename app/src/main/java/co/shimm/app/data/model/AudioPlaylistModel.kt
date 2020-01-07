@@ -4,6 +4,8 @@ import android.content.Context
 import android.net.Uri
 import co.shimm.app.R
 import co.shimm.app.data.player.ShimPlayer
+import co.shimm.app.data.player.ShimPlayer.shimPlayIndex
+import co.shimm.app.data.player.ShimPlayer.shimPlaylist
 import co.shimm.app.data.room.ShimDatabase
 import co.shimm.app.data.room.dao.ShimAudioDao
 import co.shimm.app.data.room.entity.ShimAudio
@@ -20,7 +22,12 @@ class AudioPlaylistModel(val context: Context) {
         adapter.notifyDataSetChanged()
     }
 
-    fun playAudio(shimAudio: ShimAudio){
+    fun playAudio(shimAudio: ShimAudio, index: Int){
+        val shimAudioDao: ShimAudioDao = ShimDatabase.getInstance(context).shimAudioDao
+        Thread { shimPlaylist = shimAudioDao.getAudios(shimAudio.playlistId!!) as ArrayList<ShimAudio>}.start()
+
+        shimPlayIndex = index
+
         val mediaSource = ProgressiveMediaSource.Factory(DefaultHttpDataSourceFactory(R.string.app_name.toString()))
             .createMediaSource(Uri.parse(shimAudio.src))
         ShimPlayer.shimPlayer?.prepare(mediaSource)

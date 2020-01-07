@@ -55,14 +55,7 @@ class AudioPlaylistActivity : BaseActivity(), AudioPlaylistContract.View, View.O
                 audioTitle.text = audio.title
             }
             holder.audioPlayButton.setOnClickListener {
-                presenter.playAudio(audio)
-                PlayerEventBus.post(
-                    PlayerData(
-                        audio.title.toString(),
-                        audio.thumbnail.toString()
-                    )
-                )
-
+                presenter.playAudio(audio, position)
                 val intent = Intent(holder.itemView.context, AudioPlayerActivity::class.java)
                 holder.itemView.context.startActivity(intent)
             }

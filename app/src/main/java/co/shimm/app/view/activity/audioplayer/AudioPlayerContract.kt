@@ -7,5 +7,7 @@ interface AudioPlayerContract {
     }
 
     interface Presenter: BaseContract.BasePresenter{
+        fun playNext()
+        fun playPrevious()
     }
 }

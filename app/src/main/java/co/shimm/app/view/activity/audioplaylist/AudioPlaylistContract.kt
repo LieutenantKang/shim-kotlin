@@ -9,6 +9,6 @@ interface AudioPlaylistContract {
 
     interface Presenter: BaseContract.BasePresenter{
         fun initRecyclerViewData(adapter: AudioPlaylistActivity.AudioAdapter, listId: Int)
-        fun playAudio(audio: ShimAudio)
+        fun playAudio(audio: ShimAudio, index: Int)
     }
 }
