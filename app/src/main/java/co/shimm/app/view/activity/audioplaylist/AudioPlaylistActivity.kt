@@ -7,12 +7,17 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
 import co.shimm.app.data.player.PlayerData
 import co.shimm.app.data.player.PlayerEventBus
+import co.shimm.app.data.player.ShimPlayer.shimPlayerCounselorDescription
+import co.shimm.app.data.player.ShimPlayer.shimPlayerCounselorName
+import co.shimm.app.data.player.ShimPlayer.shimPlayerThumbnail
 import co.shimm.app.data.room.entity.ShimAudio
+import co.shimm.app.data.room.entity.ShimAudioPlaylist
 import co.shimm.app.view.activity.audioplayer.AudioPlayerActivity
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_audio_playlist.*
@@ -26,9 +31,18 @@ class AudioPlaylistActivity : BaseActivity(), AudioPlaylistContract.View, View.O
         presenter = AudioPlaylistPresenter(this@AudioPlaylistActivity, this)
         presenter.start()
 
+        val shimAudioPlaylist = presenter.getAudioPlaylist(intent.getIntExtra("listId",-1))
+
         val recyclerView = audio_playlist_recycler_view
-        val recyclerViewAdapter = AudioAdapter(presenter)
+        val recyclerViewAdapter = AudioAdapter(presenter, shimAudioPlaylist!!)
         recyclerView.adapter = recyclerViewAdapter
+
+        Glide.with(this).load(shimAudioPlaylist.thumbnail)
+            .error(R.drawable.card_image_sample).into(audio_playlist_thumbnail)
+
+        audio_playlist_title.text = shimAudioPlaylist.title
+        audio_playlist_description.text = shimAudioPlaylist.description
+        audio_playlist_counselor_name.text = presenter.getCounselor(shimAudioPlaylist.counselorId!!).name
 
         presenter.initRecyclerViewData(recyclerViewAdapter, intent.getIntExtra("listId", -1))
     }
@@ -39,7 +53,7 @@ class AudioPlaylistActivity : BaseActivity(), AudioPlaylistContract.View, View.O
 
     override fun isViewActive(): Boolean = checkActive()
 
-    class AudioAdapter(val presenter: AudioPlaylistContract.Presenter): RecyclerView.Adapter<AudioAdapter.ViewHolder>(){
+    class AudioAdapter(val presenter: AudioPlaylistContract.Presenter, private val shimAudioPlaylist: ShimAudioPlaylist): RecyclerView.Adapter<AudioAdapter.ViewHolder>(){
         private lateinit var shimAudioList : ArrayList<ShimAudio>
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -49,14 +63,15 @@ class AudioPlaylistActivity : BaseActivity(), AudioPlaylistContract.View, View.O
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val audio = shimAudioList[position]
-            Glide.with(holder.itemView.context).load(audio.thumbnail)
-                .error(R.drawable.card_image_sample).into(holder.audioThumbnail)
             with(holder){
                 audioTitle.text = audio.title
             }
-            holder.audioPlayButton.setOnClickListener {
+            holder.audioLayout.setOnClickListener {
                 presenter.playAudio(audio, position)
+                shimPlayerThumbnail = shimAudioPlaylist.thumbnail
                 val intent = Intent(holder.itemView.context, AudioPlayerActivity::class.java)
+                shimPlayerCounselorName = presenter.getCounselor(shimAudioPlaylist.counselorId!!).name
+                shimPlayerCounselorDescription = presenter.getCounselor(shimAudioPlaylist.counselorId!!).about
                 holder.itemView.context.startActivity(intent)
             }
         }
@@ -69,8 +84,7 @@ class AudioPlaylistActivity : BaseActivity(), AudioPlaylistContract.View, View.O
 
         inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
             val audioTitle: TextView = view.card_audio_title
-            val audioThumbnail: ImageView = view.card_audio_thumbnail
-            val audioPlayButton: ImageButton = view.card_audio_play_button
+            val audioLayout: ConstraintLayout = view.card_audio_layout
         }
     }
 }

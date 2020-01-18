@@ -10,13 +10,13 @@
     <item
         android:id="@+id/navigation_shim"
         android:enabled="true"
-        android:icon="@drawable/ic_spa_black_24dp"
-        android:title="@string/bottom_menu_shim"/>
+        android:icon="@drawable/ic_video_black_24dp"
+        android:title="@string/bottom_menu_video"/>
 
     <item
         android:id="@+id/navigation_music"
         android:enabled="true"
         android:icon="@drawable/ic_music_note_black_24dp"
-        android:title="@string/bottom_menu_music"/>
+        android:title="@string/bottom_menu_audio"/>
 
 </menu>

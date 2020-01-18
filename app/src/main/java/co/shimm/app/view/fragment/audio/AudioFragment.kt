@@ -31,7 +31,7 @@ class AudioFragment : BaseFragment(), AudioContract.View {
     get() = R.layout.fragment_audio
 
     override lateinit var presenter: AudioContract.Presenter
-    var recyclerViews = arrayOf<RecyclerView?>(null, null, null, null, null)
+    var recyclerViews = arrayOf<RecyclerView?>(null)
 
     override fun setView(view: View?, savedInstanceState: Bundle?, arguments: Bundle?) {
         presenter = AudioPresenter(this@AudioFragment, requireContext())
@@ -47,9 +47,9 @@ class AudioFragment : BaseFragment(), AudioContract.View {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                val position : Int? = tab?.position
-                val recyclerView : RecyclerView? = recyclerViews[position!!]
-                presenter.updateRecyclerViewData(recyclerView?.adapter as Page.AudioPlaylistAdapter, position)
+//                val position : Int? = tab?.position
+//                val recyclerView : RecyclerView? = recyclerViews[position!!]
+//                presenter.updateRecyclerViewData(recyclerView?.adapter as Page.AudioPlaylistAdapter, position)
             }
         })
     }
@@ -130,15 +130,11 @@ class AudioFragment : BaseFragment(), AudioContract.View {
             return page
         }
 
-        override fun getCount(): Int { return 5 }
+        override fun getCount(): Int { return 1 }
 
         override fun getPageTitle(position: Int): CharSequence? {
             return when(position) {
                 0 -> "All"
-                1 -> "Favorite"
-                2 -> "ASMR"
-                3 -> "Relax"
-                4 -> "Focus"
                 else -> "Unknown"
             }
         }

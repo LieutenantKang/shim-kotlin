@@ -37,7 +37,6 @@ class AudioPlayerModel {
             .createMediaSource(Uri.parse(shimAudio?.src))
         shimPlayer?.prepare(mediaSource)
         shimPlayer?.playWhenReady = true
-        shimPlayerThumbnail = shimAudio?.thumbnail
         shimPlayerTitle = shimAudio?.title
     }
 }

@@ -28,7 +28,7 @@ class VideoFragment : BaseFragment(), VideoContract.View {
         get() = R.layout.fragment_video
 
     override lateinit var presenter: VideoContract.Presenter
-    var recyclerViews = arrayOf<RecyclerView?>(null, null, null, null, null)
+    var recyclerViews = arrayOf<RecyclerView?>(null)
 
     override fun setView(view: View?, savedInstanceState: Bundle?, arguments: Bundle?) {
         presenter = VideoPresenter(this@VideoFragment, requireContext())
@@ -44,9 +44,9 @@ class VideoFragment : BaseFragment(), VideoContract.View {
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                val position : Int? = tab?.position
-                val recyclerView : RecyclerView? = recyclerViews[position!!]
-                presenter.updateRecyclerViewData(recyclerView?.adapter as Page.VideoPlaylistAdapter, position)
+//                val position : Int? = tab?.position
+//                val recyclerView : RecyclerView? = recyclerViews[position!!]
+//                presenter.updateRecyclerViewData(recyclerView?.adapter as Page.VideoPlaylistAdapter, position)
             }
         })
     }
@@ -117,15 +117,11 @@ class VideoFragment : BaseFragment(), VideoContract.View {
             return page
         }
 
-        override fun getCount(): Int { return 5 }
+        override fun getCount(): Int { return 1 }
 
         override fun getPageTitle(position: Int): CharSequence? {
             return when(position) {
                 0 -> "All"
-                1 -> "Favorite"
-                2 -> "ASMR"
-                3 -> "Relax"
-                4 -> "Focus"
                 else -> "Unknown"
             }
         }

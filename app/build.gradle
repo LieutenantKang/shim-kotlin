@@ -21,7 +21,7 @@ android {
     buildTypes {
         debug {
             applicationIdSuffix = '.dev'
-            buildConfigField "String", "SERVER_URL", "\"http://52.78.106.14/\""
+            buildConfigField "String", "SERVER_URL", "\"https://shimm.co/\""
         }
         release {
             minifyEnabled false
@@ -66,4 +66,5 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
     implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
 }

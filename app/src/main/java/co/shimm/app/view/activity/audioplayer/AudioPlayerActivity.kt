@@ -1,6 +1,5 @@
 package co.shimm.app.view.activity.audioplayer
 
-import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -10,6 +9,8 @@ import co.shimm.app.base.BaseActivity
 import co.shimm.app.data.player.PlayerData
 import co.shimm.app.data.player.PlayerEventBus
 import co.shimm.app.data.player.ShimPlayer.shimPlayer
+import co.shimm.app.data.player.ShimPlayer.shimPlayerCounselorDescription
+import co.shimm.app.data.player.ShimPlayer.shimPlayerCounselorName
 import co.shimm.app.data.player.ShimPlayer.shimPlayerThumbnail
 import co.shimm.app.data.player.ShimPlayer.shimPlayerTitle
 import com.bumptech.glide.Glide
@@ -31,9 +32,14 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
 
         audio_player_player.player = shimPlayer
         audio_player_player.controllerShowTimeoutMs = 0
+        audio_player_player.showController()
 
         audioPlayerTitle = audio_player_title
         audioPlayerThumbnail = findViewById<View>(R.id.audio_player_thumbnail) as ImageView
+
+        audio_player_counselor_name.text = shimPlayerCounselorName
+        audio_player_counselor_description.text = shimPlayerCounselorDescription
+
         audioPlayerForwardButton = exo_forward
         audioPlayerRewindButton = exo_rewind
 

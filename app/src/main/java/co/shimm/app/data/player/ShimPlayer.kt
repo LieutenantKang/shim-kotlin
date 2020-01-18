@@ -8,6 +8,9 @@ object ShimPlayer {
     var shimPlayerThumbnail : String? = null
     var shimPlayerTitle : String ? = null
 
+    var shimPlayerCounselorName : String ?= null
+    var shimPlayerCounselorDescription : String ?= null
+
     var shimPlaylist: List<ShimAudio>? = null
     var shimPlayIndex: Int? = null
 }
