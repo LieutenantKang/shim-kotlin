@@ -6,17 +6,24 @@ import com.google.android.gms.tasks.Task
 
 interface LoginContract {
     interface Model{
+        interface CheckAccountFinishedListener{
+            fun idExist(idToken: String?)
+            fun idAbsence(idToken: String?)
+        }
+
         interface LoginFinishedListener{
             fun onFinished(googleToken : String)
             fun onFailure(t : Throwable)
         }
 
         fun signIn()
-        fun checkAccount(task: Task<GoogleSignInAccount>, loginFinishedListener: LoginFinishedListener)
+        fun checkAccount(task: Task<GoogleSignInAccount>, checkAccountFinishedListener: CheckAccountFinishedListener)
+        fun googleLogin(idToken: String?, loginFinishedListener: LoginFinishedListener)
     }
 
     interface View: BaseContract.BaseView<Presenter>{
         fun startMainActivity()
+        fun startAgreementActivity(idToken: String?)
     }
 
     interface Presenter: BaseContract.BasePresenter{

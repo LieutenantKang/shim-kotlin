@@ -5,6 +5,7 @@ import android.view.View
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
 import co.shimm.app.const.Const.Login.REQUEST_CODE
+import co.shimm.app.view.activity.agreement.AgreementActivity
 import co.shimm.app.view.activity.main.MainActivity
 import co.shimm.app.view.activity.payment.PaymentActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -40,6 +41,12 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
             val task : Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             presenter.checkAccount(task)
         }
+    }
+
+    override fun startAgreementActivity(idToken: String?) {
+        val intent = Intent(this@LoginActivity, AgreementActivity::class.java)
+        intent.putExtra("token", idToken)
+        startActivity(intent)
     }
 
     override fun startMainActivity() {

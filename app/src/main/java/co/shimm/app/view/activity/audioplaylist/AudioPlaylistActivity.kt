@@ -67,6 +67,7 @@ class AudioPlaylistActivity : BaseActivity(), AudioPlaylistContract.View, View.O
             val audio = shimAudioList[position]
             with(holder){
                 audioTitle.text = audio.title
+                audioDuration.text = getDurationText(audio.duration!!)
             }
             holder.audioLayout.setOnClickListener {
                 presenter.playAudio(audio, position)
@@ -79,12 +80,21 @@ class AudioPlaylistActivity : BaseActivity(), AudioPlaylistContract.View, View.O
 
         override fun getItemCount() = shimAudioList.size
 
+        private fun getDurationText(duration: Int): String{
+            return if((duration%60>=10)){
+                (duration/60).toString()+":"+(duration%60).toString()
+            }else{
+                (duration/60).toString()+":0"+(duration%60).toString()
+            }
+        }
+
         fun setItem(audioList: ArrayList<ShimAudio>){
             this.shimAudioList = audioList
         }
 
         inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
             val audioTitle: TextView = view.card_audio_title
+            val audioDuration: TextView = view.card_audio_duration
             val audioLayout: ConstraintLayout = view.card_audio_layout
         }
     }

@@ -1,11 +1,13 @@
 package co.shimm.app.view.fragment.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import co.shimm.app.R
 import co.shimm.app.base.BaseFragment
@@ -13,6 +15,8 @@ import co.shimm.app.data.room.entity.ShimAudio
 import co.shimm.app.data.room.entity.ShimAudioPlaylist
 import co.shimm.app.data.room.entity.ShimVideo
 import co.shimm.app.data.room.entity.ShimVideoPlaylist
+import co.shimm.app.view.activity.audioplaylist.AudioPlaylistActivity
+import co.shimm.app.view.activity.videoplaylist.VideoPlaylistActivity
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.card_home_audio.view.*
 import kotlinx.android.synthetic.main.card_home_video.view.*
@@ -61,6 +65,11 @@ class HomeFragment : BaseFragment(), HomeContract.View {
             with(holder){
                 homeVideoTitle.text = homeVideoList[position].title
             }
+            holder.homeVideoLayout.setOnClickListener{
+                val intent = Intent(holder.itemView.context, VideoPlaylistActivity::class.java)
+                intent.putExtra("listId", video.id)
+                holder.itemView.context.startActivity(intent)
+            }
         }
 
         override fun getItemCount() = homeVideoList.size
@@ -72,6 +81,7 @@ class HomeFragment : BaseFragment(), HomeContract.View {
         inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
             val homeVideoTitle : TextView = view.card_home_video_title
             val homeVideoThumbnail : ImageView = view.card_home_video_thumbnail
+            val homeVideoLayout : ConstraintLayout = view.card_home_video_layout
         }
     }
 
@@ -91,6 +101,11 @@ class HomeFragment : BaseFragment(), HomeContract.View {
             with(holder){
                 homeAudioTitle.text = homeAudioList[position].title
             }
+            holder.homeAudioLayout.setOnClickListener{
+                val intent = Intent(holder.itemView.context, AudioPlaylistActivity::class.java)
+                intent.putExtra("listId", audio.id)
+                holder.itemView.context.startActivity(intent)
+            }
         }
 
         override fun getItemCount() = homeAudioList.size
@@ -102,6 +117,7 @@ class HomeFragment : BaseFragment(), HomeContract.View {
         inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
             val homeAudioTitle : TextView = view.card_home_audio_title
             val homeAudioThumbnail : ImageView = view.card_home_audio_thumbnail
+            val homeAudioLayout : ConstraintLayout = view.card_home_audio_layout
         }
     }
 }

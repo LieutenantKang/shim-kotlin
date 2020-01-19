@@ -11,6 +11,9 @@ interface ShimVideoPlaylistDao {
     @Query("SELECT * FROM ShimVideoPlaylist")
     fun getAll() : List<ShimVideoPlaylist>
 
+    @Query("SELECT * FROM ShimVideoPlaylist WHERE id = (:id)")
+    fun getVideoPlaylist(id: Int) : List<ShimVideoPlaylist>
+
     @Query("SELECT * FROM ShimVideoPlaylist WHERE category = (:category)")
     fun findByCategory(category: Int) : List<ShimVideoPlaylist>
 

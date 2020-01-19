@@ -3,10 +3,12 @@ package co.shimm.app.view.activity.main
 import android.content.Intent
 import android.view.MenuItem
 import android.view.View
+import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.widget.TextView
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
+import co.shimm.app.data.player.HidePlayer
 import co.shimm.app.data.player.ShimPlayer.shimPlayer
 import co.shimm.app.data.player.PlayerEventBus
 import co.shimm.app.data.player.PlayerData
@@ -27,6 +29,7 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
         get() = R.layout.activity_main
 
     private lateinit var disposable: Disposable
+    private lateinit var hideDisposable: Disposable
     private lateinit var mainPlayerTitle : TextView
     private lateinit var mainPlayerView : PlayerControlView
 
@@ -53,6 +56,12 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
             .subscribe {
                 mainPlayerView.visibility = VISIBLE
                 mainPlayerTitle.text = it.playerTitle
+            }
+
+        hideDisposable = PlayerEventBus.subscribe<HidePlayer>()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                mainPlayerView.visibility = INVISIBLE
             }
     }
 

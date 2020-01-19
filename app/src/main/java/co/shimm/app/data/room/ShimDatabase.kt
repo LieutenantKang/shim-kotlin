@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import co.shimm.app.data.room.dao.*
 import co.shimm.app.data.room.entity.*
 
-@Database(entities = [ShimVideoPlaylist::class, ShimAudioPlaylist::class, ShimVideo::class, ShimAudio::class, ShimCounselor::class], version = 10, exportSchema = false)
+@Database(entities = [ShimVideoPlaylist::class, ShimAudioPlaylist::class, ShimVideo::class, ShimAudio::class, ShimCounselor::class], version = 11, exportSchema = false)
 abstract class ShimDatabase : RoomDatabase() {
     abstract val shimVideoPlaylistDao : ShimVideoPlaylistDao
     abstract val shimAudioPlaylistDao : ShimAudioPlaylistDao

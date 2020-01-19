@@ -23,28 +23,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/card_video_playlist_duration"
-            style="@style/TextAppearance.MaterialComponents.Caption"
-            android:layout_width="40dp"
-            android:layout_height="24dp"
-            android:layout_margin="12dp"
-            android:gravity="center_vertical"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="#FFFFDE"
-            app:layout_constraintBottom_toTopOf="@+id/card_video_playlist_title"
-            app:layout_constraintRight_toRightOf="parent"/>
-
-        <TextView
             android:id="@+id/card_video_playlist_title"
             style="@style/TextAppearance.MaterialComponents.Subtitle1"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="48dp"
             android:ellipsize="end"
             android:gravity="center_vertical"
-            android:maxLines="2"
-            android:paddingStart="18dp"
-            android:paddingEnd="18dp"
+            android:maxLines="1"
+            android:paddingStart="12dp"
+            android:paddingEnd="60dp"
             android:textColor="#FFFFFF"
             android:fontFamily="sans-serif"
             app:layout_constraintBottom_toBottomOf="parent"

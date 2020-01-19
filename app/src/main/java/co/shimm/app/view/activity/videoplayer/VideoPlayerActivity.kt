@@ -4,6 +4,7 @@ import android.net.Uri
 import android.view.View
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
+import co.shimm.app.data.player.ShimPlayer
 import co.shimm.app.data.player.ShimPlayer.shimPlayer
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
@@ -26,6 +27,11 @@ class VideoPlayerActivity : BaseActivity(), VideoPlayerContract.View, View.OnCli
         shimPlayer?.prepare(mediaSource)
         shimPlayer?.playWhenReady = true
         // model 로 옮겨야 함
+    }
+
+    override fun onPause() {
+        shimPlayer?.stop()
+        super.onPause()
     }
 
     override lateinit var presenter: VideoPlayerContract.Presenter
