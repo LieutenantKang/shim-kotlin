@@ -11,13 +11,11 @@ import co.shimm.app.base.BaseActivity
 import co.shimm.app.data.player.PlayerData
 import co.shimm.app.data.player.PlayerEventBus
 import co.shimm.app.data.player.ShimPlayer.shimPlayer
-import co.shimm.app.data.player.ShimPlayer.shimPlayerCounselorDescription
-import co.shimm.app.data.player.ShimPlayer.shimPlayerCounselorName
+import co.shimm.app.data.player.ShimPlayer.shimPlayerCounselor
 import co.shimm.app.data.player.ShimPlayer.shimPlayerThumbnail
 import co.shimm.app.data.player.ShimPlayer.shimPlayerTitle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
-import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import jp.wasabeef.glide.transformations.BlurTransformation
 import jp.wasabeef.glide.transformations.ColorFilterTransformation
@@ -44,8 +42,8 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
         audioPlayerTitle = audio_player_title
         audioPlayerThumbnail = findViewById<View>(R.id.audio_player_thumbnail) as ImageView
 
-        audio_player_counselor_name.text = shimPlayerCounselorName
-        audio_player_counselor_description.text = shimPlayerCounselorDescription
+        audio_player_counselor_name.text = shimPlayerCounselor?.name
+        audio_player_counselor_description.text = shimPlayerCounselor?.about
 
         audioPlayerForwardButton = exo_forward
         audioPlayerRewindButton = exo_rewind
@@ -62,6 +60,8 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
         Glide.with(this).load(shimPlayerThumbnail).apply(bitmapTransform(MultiTransformation<Bitmap>(
             BlurTransformation(25), ColorFilterTransformation(Color.argb(65,0,0,0))
         ))).into(audio_player_thumbnail)
+
+        Glide.with(this).load(shimPlayerCounselor?.picture).into(audio_player_counselor_thumbnail)
 
         PlayerEventBus.post(
             PlayerData(

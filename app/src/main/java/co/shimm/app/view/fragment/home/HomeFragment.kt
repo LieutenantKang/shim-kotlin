@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import co.shimm.app.R
 import co.shimm.app.base.BaseFragment
 import co.shimm.app.data.room.entity.ShimAudio
+import co.shimm.app.data.room.entity.ShimAudioPlaylist
 import co.shimm.app.data.room.entity.ShimVideo
+import co.shimm.app.data.room.entity.ShimVideoPlaylist
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.card_home_audio.view.*
 import kotlinx.android.synthetic.main.card_home_video.view.*
@@ -44,7 +46,7 @@ class HomeFragment : BaseFragment(), HomeContract.View {
     override fun isViewActive(): Boolean = checkActive()
 
     class HomeVideoAdapter: RecyclerView.Adapter<HomeVideoAdapter.ViewHolder>(){
-        private lateinit var homeVideoList : ArrayList<ShimVideo>
+        private lateinit var homeVideoList : ArrayList<ShimVideoPlaylist>
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.card_home_video,parent,false)
@@ -63,7 +65,7 @@ class HomeFragment : BaseFragment(), HomeContract.View {
 
         override fun getItemCount() = homeVideoList.size
 
-        fun setItem(homeVideoList : ArrayList<ShimVideo>){
+        fun setItem(homeVideoList : ArrayList<ShimVideoPlaylist>){
             this.homeVideoList = homeVideoList
         }
 
@@ -74,7 +76,7 @@ class HomeFragment : BaseFragment(), HomeContract.View {
     }
 
     class HomeAudioAdapter: RecyclerView.Adapter<HomeAudioAdapter.ViewHolder>(){
-        private lateinit var homeAudioList : ArrayList<ShimAudio>
+        private lateinit var homeAudioList : ArrayList<ShimAudioPlaylist>
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.card_home_audio,parent,false)
@@ -93,7 +95,7 @@ class HomeFragment : BaseFragment(), HomeContract.View {
 
         override fun getItemCount() = homeAudioList.size
 
-        fun setItem(homeAudioList : ArrayList<ShimAudio>){
+        fun setItem(homeAudioList : ArrayList<ShimAudioPlaylist>){
             this.homeAudioList = homeAudioList
         }
 

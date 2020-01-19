@@ -7,6 +7,9 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface RetrofitService {
+    @GET("/users/check")
+    fun checkUser(@Header("Authorization") googleToken: String?) : Call<CheckUserResponse>
+
     @POST("/users/auth/")
     fun googleLogin(@Header("Authorization") googleToken : String?) : Call<LoginResponse>
 
@@ -25,9 +28,9 @@ interface RetrofitService {
     @GET("/counselors")
     fun getCounselorList(@Header("Authorization") token: String?) : Call<CounselorResponse>
 
-    @GET("/media/videos/recommends?limit=4")
-    fun getRecommendVideoList(@Header("Authorization") token : String?) : Call<VideoResponse>
+    @GET("/playlists/videos/recommends?limit=4")
+    fun getRecommendVideoList(@Header("Authorization") token : String?) : Call<VideoPlaylistResponse>
 
-    @GET("/media/audios/recommends?limit=4")
-    fun getRecommendAudioList(@Header("Authorization") token : String?) : Call<AudioResponse>
+    @GET("/playlists/audios/recommends?limit=4")
+    fun getRecommendAudioList(@Header("Authorization") token : String?) : Call<AudioPlaylistResponse>
 }

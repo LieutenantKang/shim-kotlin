@@ -17,7 +17,9 @@
         android:theme="@style/FullScreenTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".view.activity.audioplaylist.AudioPlaylistActivity"></activity>
+        <activity android:name=".view.activity.terms.TermsActivity"/>
+        <activity android:name=".view.activity.agreement.AgreementActivity"/>
+        <activity android:name=".view.activity.audioplaylist.AudioPlaylistActivity" />
         <activity android:name=".view.activity.videoplaylist.VideoPlaylistActivity" />
         <activity android:name=".view.activity.payment.PaymentActivity" />
         <activity

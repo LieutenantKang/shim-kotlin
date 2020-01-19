@@ -6,24 +6,18 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
-import co.shimm.app.data.player.PlayerData
-import co.shimm.app.data.player.PlayerEventBus
-import co.shimm.app.data.player.ShimPlayer.shimPlayerCounselorDescription
-import co.shimm.app.data.player.ShimPlayer.shimPlayerCounselorName
+import co.shimm.app.data.player.ShimPlayer.shimPlayerCounselor
 import co.shimm.app.data.player.ShimPlayer.shimPlayerThumbnail
 import co.shimm.app.data.room.entity.ShimAudio
 import co.shimm.app.data.room.entity.ShimAudioPlaylist
 import co.shimm.app.view.activity.audioplayer.AudioPlayerActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
-import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import jp.wasabeef.glide.transformations.BlurTransformation
 import jp.wasabeef.glide.transformations.ColorFilterTransformation
@@ -78,8 +72,7 @@ class AudioPlaylistActivity : BaseActivity(), AudioPlaylistContract.View, View.O
                 presenter.playAudio(audio, position)
                 shimPlayerThumbnail = shimAudioPlaylist.thumbnail
                 val intent = Intent(holder.itemView.context, AudioPlayerActivity::class.java)
-                shimPlayerCounselorName = presenter.getCounselor(shimAudioPlaylist.counselorId!!).name
-                shimPlayerCounselorDescription = presenter.getCounselor(shimAudioPlaylist.counselorId!!).about
+                shimPlayerCounselor = presenter.getCounselor(shimAudioPlaylist.counselorId!!)
                 holder.itemView.context.startActivity(intent)
             }
         }
