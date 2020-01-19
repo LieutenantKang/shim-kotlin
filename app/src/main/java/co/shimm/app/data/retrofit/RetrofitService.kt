@@ -24,4 +24,10 @@ interface RetrofitService {
 
     @GET("/counselors")
     fun getCounselorList(@Header("Authorization") token: String?) : Call<CounselorResponse>
+
+    @GET("/media/videos/recommends?limit=4")
+    fun getRecommendVideoList(@Header("Authorization") token : String?) : Call<VideoResponse>
+
+    @GET("/media/audios/recommends?limit=4")
+    fun getRecommendAudioList(@Header("Authorization") token : String?) : Call<AudioResponse>
 }

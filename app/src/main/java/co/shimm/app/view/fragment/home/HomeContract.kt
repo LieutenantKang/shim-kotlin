@@ -6,6 +6,6 @@ interface HomeContract {
     interface View: BaseContract.BaseView<Presenter>
 
     interface Presenter: BaseContract.BasePresenter {
-        fun initRecyclerViewData(adapter: HomeFragment.HomeAdapter)
+        fun initRecyclerViewData(videoAdapter: HomeFragment.HomeVideoAdapter, audioAdapter: HomeFragment.HomeAudioAdapter)
     }
 }

@@ -14,29 +14,50 @@
         android:layout_marginTop="30dp"
         android:text="@string/home_today"
         android:textColor="#010038"
-        android:textSize="40sp"/>
+        android:textSize="30sp"/>
 
     <TextView
-        android:id="@+id/home_subtitle"
+        android:id="@+id/home_video_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/home_title"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:text="@string/home_title"
-        android:textSize="20sp"
+        android:text="이런 영상은 어때요?"
+        android:textSize="16sp"
         android:textColor="#010038"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/home_recycler_view"
+        android:id="@+id/home_video_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_margin="10dp"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/home_subtitle"
+        app:layout_constraintTop_toBottomOf="@id/home_video_subtitle"
         app:layout_constraintLeft_toLeftOf="parent"/>
 
+    <TextView
+        android:id="@+id/home_audio_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/home_video_recycler_view"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="이거 한번 들어보실래요?"
+        android:textSize="16sp"
+        android:textColor="#010038"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_audio_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/home_audio_subtitle"
+        app:layout_constraintLeft_toLeftOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

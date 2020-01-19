@@ -1,5 +1,7 @@
 package co.shimm.app.view.activity.audioplayer
 
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -14,6 +16,11 @@ import co.shimm.app.data.player.ShimPlayer.shimPlayerCounselorName
 import co.shimm.app.data.player.ShimPlayer.shimPlayerThumbnail
 import co.shimm.app.data.player.ShimPlayer.shimPlayerTitle
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
+import jp.wasabeef.glide.transformations.BlurTransformation
+import jp.wasabeef.glide.transformations.ColorFilterTransformation
 import kotlinx.android.synthetic.main.activity_audio_player.*
 import kotlinx.android.synthetic.main.custom_audio_player.*
 
@@ -51,8 +58,11 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
 
     private fun updateUI(){
         audioPlayerTitle.text = shimPlayerTitle
-        Glide.with(applicationContext).load(shimPlayerThumbnail)
-            .centerCrop().into(audioPlayerThumbnail)
+
+        Glide.with(this).load(shimPlayerThumbnail).apply(bitmapTransform(MultiTransformation<Bitmap>(
+            BlurTransformation(25), ColorFilterTransformation(Color.argb(65,0,0,0))
+        ))).into(audio_player_thumbnail)
+
         PlayerEventBus.post(
             PlayerData(
                 shimPlayerTitle.toString(),

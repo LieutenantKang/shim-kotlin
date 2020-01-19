@@ -9,7 +9,7 @@
     </style>
 
     <style name="FullScreenTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="actionBarItemBackground">@color/darkBlue</item>
+        <item name="android:statusBarColor">@color/darkBlue</item>
         <item name="windowNoTitle">true</item>
     </style>
 

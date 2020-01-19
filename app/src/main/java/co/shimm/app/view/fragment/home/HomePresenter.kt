@@ -10,7 +10,7 @@ class HomePresenter(private val view: HomeContract.View, context: Context) : Hom
         view.presenter = this
     }
 
-    override fun initRecyclerViewData(adapter: HomeFragment.HomeAdapter) {
-        model.initRecyclerViewData(adapter)
+    override fun initRecyclerViewData(videoAdapter: HomeFragment.HomeVideoAdapter, audioAdapter: HomeFragment.HomeAudioAdapter) {
+        model.initRecyclerViewData(videoAdapter, audioAdapter)
     }
 }

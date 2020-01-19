@@ -1,6 +1,8 @@
 package co.shimm.app.view.activity.audioplaylist
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +22,11 @@ import co.shimm.app.data.room.entity.ShimAudio
 import co.shimm.app.data.room.entity.ShimAudioPlaylist
 import co.shimm.app.view.activity.audioplayer.AudioPlayerActivity
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.RequestOptions.bitmapTransform
+import jp.wasabeef.glide.transformations.BlurTransformation
+import jp.wasabeef.glide.transformations.ColorFilterTransformation
 import kotlinx.android.synthetic.main.activity_audio_playlist.*
 import kotlinx.android.synthetic.main.card_audio.view.*
 
@@ -37,8 +44,9 @@ class AudioPlaylistActivity : BaseActivity(), AudioPlaylistContract.View, View.O
         val recyclerViewAdapter = AudioAdapter(presenter, shimAudioPlaylist!!)
         recyclerView.adapter = recyclerViewAdapter
 
-        Glide.with(this).load(shimAudioPlaylist.thumbnail)
-            .error(R.drawable.card_image_sample).into(audio_playlist_thumbnail)
+        Glide.with(this).load(shimAudioPlaylist.thumbnail).apply(bitmapTransform(MultiTransformation<Bitmap>(
+            BlurTransformation(25), ColorFilterTransformation(Color.argb(65,0,0,0))
+        ))).into(audio_playlist_thumbnail)
 
         audio_playlist_title.text = shimAudioPlaylist.title
         audio_playlist_description.text = shimAudioPlaylist.description
