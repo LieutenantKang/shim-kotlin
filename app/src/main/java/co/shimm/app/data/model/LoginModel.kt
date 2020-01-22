@@ -3,6 +3,7 @@ package co.shimm.app.data.model
 import android.app.Activity
 import android.content.Intent
 import android.util.Log
+import co.shimm.app.BuildConfig
 import co.shimm.app.const.Const.Login.REQUEST_CODE
 import co.shimm.app.data.user.UserInformation
 import co.shimm.app.data.retrofit.RetrofitGenerator
@@ -22,7 +23,7 @@ class LoginModel(private val activity: Activity) : LoginContract.Model {
     override fun signIn(){
         val gso : GoogleSignInOptions = GoogleSignInOptions
             .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("758847328465-skprou62c3m1ub7a6ga0mct3v0eeb07s.apps.googleusercontent.com")
+            .requestIdToken(BuildConfig.TOKEN)
             .requestEmail().build()
         val mGoogleSignInClient = GoogleSignIn.getClient(activity, gso)
 
@@ -35,11 +36,15 @@ class LoginModel(private val activity: Activity) : LoginContract.Model {
             val account : GoogleSignInAccount? = task.getResult(ApiException::class.java)
             val idToken : String? = account?.idToken
 
-            val call = RetrofitGenerator.create().checkUser("Bearer $idToken")
+            val checkCall = RetrofitGenerator.create().checkUser("Bearer $idToken")
+            Log.d("User Check Token", idToken.toString())
 
-            call.enqueue(object : Callback<CheckUserResponse> {
+            checkCall.enqueue(object : Callback<CheckUserResponse> {
                 override fun onResponse(call: Call<CheckUserResponse>, response: Response<CheckUserResponse>) {
-                    Log.d("User Check Success", response.body()?.check.toString())
+                    Log.d("User Check", response.toString())
+                    Log.d("User Check2", response.body().toString())
+                    Log.d("User Check3", response.message())
+                    Log.d("User Check4",response.errorBody().toString())
                     if(response.body()?.check!!){
                         checkAccountFinishedListener.idExist(idToken)
                     }else{

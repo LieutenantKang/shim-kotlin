@@ -19,8 +19,10 @@ class AgreementModel: AgreementContract.Model {
 
             loginCall.enqueue(object : Callback<LoginResponse> {
                 override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                    Log.d("success", response.body()?.token.toString())
-                    UserInformation.token = response.body()?.token.toString()
+                    Log.d("Response success", response.body().toString())
+                    UserInformation.token = response.body()!!.token
+                    Log.d("token Check", UserInformation.token!!)
+                    Log.d("idtoken Check", UserInformation.idToken!!)
                     loginFinishedListener.onFinished(response.body()?.token.toString())
                 }
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
@@ -28,7 +30,9 @@ class AgreementModel: AgreementContract.Model {
                     loginFinishedListener.onFailure(t)
                 }
             })
-        }catch(e: ApiException){ }
+        }catch(e: ApiException){
+            var aa : Int = 3
+        }
     }
 
     override fun agreeTerms(agreementFinishedListener: AgreementContract.Model.AgreementFinishedListener) {

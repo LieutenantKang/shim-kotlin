@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
+import co.shimm.app.data.user.UserInformation
 import co.shimm.app.view.activity.main.MainActivity
 import co.shimm.app.view.activity.terms.TermsActivity
 import kotlinx.android.synthetic.main.activity_agreement.*
@@ -45,7 +46,7 @@ class AgreementActivity : BaseActivity(), AgreementContract.View, View.OnClickLi
         when(v.id){
             R.id.agreement_join_button -> {
                 if(agreement_checkbox_all.isChecked){
-                    presenter.googleLogin(intent.getStringExtra("token"))
+                    presenter.googleLogin(UserInformation.idToken)
                 }else{
                     Toast.makeText(this, "약관에 모두 동의해주세요", Toast.LENGTH_SHORT).show()
                 }
