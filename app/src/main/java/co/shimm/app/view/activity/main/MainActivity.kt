@@ -12,6 +12,7 @@ import co.shimm.app.data.player.HidePlayer
 import co.shimm.app.data.player.ShimPlayer.shimPlayer
 import co.shimm.app.data.player.PlayerEventBus
 import co.shimm.app.data.player.PlayerData
+import co.shimm.app.data.player.ShimPlayer
 import co.shimm.app.data.player.ShimPlayer.shimPlayerTitle
 import co.shimm.app.data.player.ShimPlayer.shimPlayerThumbnail
 import co.shimm.app.view.activity.audioplayer.AudioPlayerActivity
@@ -19,6 +20,7 @@ import co.shimm.app.view.fragment.home.HomeFragment
 import co.shimm.app.view.fragment.audio.AudioFragment
 import co.shimm.app.view.fragment.video.VideoFragment
 import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerControlView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -47,8 +49,6 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
         initializePlayer()
 
         main_player.setOnClickListener(this)
-        exo_main_forward.setOnClickListener(this)
-        exo_main_rewind.setOnClickListener(this)
 
         val bottomNavigationView = findViewById<View>(R.id.main_navigation_view) as BottomNavigationView
         val fragmentHome = HomeFragment()
@@ -58,6 +58,7 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
         disposable = PlayerEventBus.subscribe<PlayerData>()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
+                main_player.player = shimPlayer
                 mainPlayerView.visibility = VISIBLE
                 mainPlayerTitle.text = it.playerTitle
             }
@@ -67,6 +68,8 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
             .subscribe {
                 mainPlayerView.visibility = INVISIBLE
             }
+
+        addListener()
     }
 
     override fun onDestroy() {
@@ -79,14 +82,6 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
             R.id.main_player -> {
                 val intent = Intent(this@MainActivity, AudioPlayerActivity::class.java)
                 startActivity(intent)
-            }
-            R.id.exo_main_forward -> {
-                presenter.playNext()
-                updateUI()
-            }
-            R.id.exo_main_rewind -> {
-                presenter.playPrevious()
-                updateUI()
             }
         }
     }
@@ -123,14 +118,28 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
 
     private fun updateUI(){
         if(isViewActive()) {
-            main_player_title.text = shimPlayerTitle
+            main_player_title.text = ShimPlayer.shimPlaylist!![shimPlayer?.currentWindowIndex!!].title.toString()
         }
 
         PlayerEventBus.post(
             PlayerData(
-                shimPlayerTitle.toString(),
-                shimPlayerThumbnail.toString()
+                ShimPlayer.shimPlaylist!![shimPlayer?.currentWindowIndex!!].title.toString(),
+                ShimPlayer.shimPlaylist!![shimPlayer?.currentWindowIndex!!].thumbnail.toString()
             )
         )
     }
+
+    private fun addListener(){
+        val eventListener = object : Player.EventListener{
+            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                if(playbackState == Player.STATE_READY){
+//                    presenter.playNext()
+                    updateUI()
+                }
+                super.onPlayerStateChanged(playWhenReady, playbackState)
+            }
+        }
+        shimPlayer?.addListener(eventListener)
+    }
+
 }

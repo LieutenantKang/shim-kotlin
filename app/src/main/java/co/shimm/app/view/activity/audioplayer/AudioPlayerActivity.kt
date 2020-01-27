@@ -14,6 +14,7 @@ import co.shimm.app.data.player.ShimPlayer.shimPlayer
 import co.shimm.app.data.player.ShimPlayer.shimPlayerCounselor
 import co.shimm.app.data.player.ShimPlayer.shimPlayerThumbnail
 import co.shimm.app.data.player.ShimPlayer.shimPlayerTitle
+import co.shimm.app.data.player.ShimPlayer.shimPlaylist
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
@@ -32,8 +33,6 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
 
     private lateinit var audioPlayerTitle : TextView
     private lateinit var audioPlayerThumbnail : ImageView
-    private lateinit var audioPlayerForwardButton : ImageButton
-    private lateinit var audioPlayerRewindButton : ImageButton
     private lateinit var disposable: Disposable
 
     override fun initView() {
@@ -50,11 +49,6 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
         audio_player_counselor_name.text = shimPlayerCounselor?.name
         audio_player_counselor_description.text = shimPlayerCounselor?.about
 
-        audioPlayerForwardButton = exo_forward
-        audioPlayerRewindButton = exo_rewind
-
-        audioPlayerForwardButton.setOnClickListener(this)
-        audioPlayerRewindButton.setOnClickListener(this)
         audio_player_back_button.setOnClickListener(this)
 
         disposable = PlayerEventBus.subscribe<PlayerData>()
@@ -70,8 +64,9 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
     private fun updateUI(){
         if(isViewActive()) {
 //            audioPlayerTitle.text = shimPlayerTitle
+//            audioPlayerTitle.text = shimPlaylist!![shimPlayer?.currentWindowIndex!!].title
 
-            Glide.with(this).load(shimPlayerThumbnail).apply(
+            Glide.with(this).load(shimPlaylist!![shimPlayer?.currentWindowIndex!!].thumbnail).apply(
                 bitmapTransform(
                     MultiTransformation<Bitmap>(
                         BlurTransformation(25), ColorFilterTransformation(Color.argb(65, 0, 0, 0))
@@ -85,8 +80,8 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
 
         PlayerEventBus.post(
             PlayerData(
-                shimPlayerTitle.toString(),
-                shimPlayerThumbnail.toString()
+                shimPlaylist!![shimPlayer?.currentWindowIndex!!].title.toString(),
+                shimPlaylist!![shimPlayer?.currentWindowIndex!!].thumbnail.toString()
             )
         )
     }
@@ -94,8 +89,8 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
     private fun addListener(){
         val eventListener = object : Player.EventListener{
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                if(playbackState == Player.STATE_ENDED){
-                    presenter.playNext()
+                if(playbackState == Player.STATE_READY){
+//                    presenter.playNext()
                     updateUI()
                 }
                 super.onPlayerStateChanged(playWhenReady, playbackState)
@@ -108,14 +103,6 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
 
     override fun onClick(v: View) {
         when(v.id){
-            R.id.exo_forward -> {
-                presenter.playNext()
-                updateUI()
-            }
-            R.id.exo_rewind -> {
-                presenter.playPrevious()
-                updateUI()
-            }
             R.id.audio_player_back_button -> {
                 finish()
             }
