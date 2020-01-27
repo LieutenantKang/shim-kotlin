@@ -7,5 +7,7 @@ interface MainContract {
 
     interface Presenter: BaseContract.BasePresenter{
         fun fetchData()
+        fun playNext()
+        fun playPrevious()
     }
 }

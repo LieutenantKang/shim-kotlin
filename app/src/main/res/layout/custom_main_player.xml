@@ -20,8 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
             app:layout_constraintTop_toTopOf="parent"
             app:played_color="#FFFFFF" />
 
@@ -29,7 +29,7 @@
             android:id="@+id/main_player_title"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="35dp"
             android:maxLines="1"
             android:ellipsize="end"
             android:textColor="#FFFFFF"
@@ -50,7 +50,7 @@
             app:layout_constraintTop_toBottomOf="@+id/exo_progress">
 
             <ImageButton
-                android:id="@id/exo_rew"
+                android:id="@+id/exo_main_rewind"
                 style="@style/ExoMediaButton.Rewind"
                 android:layout_width="44dp"
                 android:layout_height="44dp" />
@@ -69,7 +69,7 @@
                 android:layout_gravity="center" />
 
             <ImageButton
-                android:id="@id/exo_ffwd"
+                android:id="@+id/exo_main_forward"
                 style="@style/ExoMediaButton.FastForward"
                 android:layout_width="44dp"
                 android:layout_height="44dp"

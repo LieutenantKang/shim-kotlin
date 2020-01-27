@@ -1,7 +1,10 @@
 package co.shimm.app.data.model
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
+import co.shimm.app.R
+import co.shimm.app.data.player.ShimPlayer
 import co.shimm.app.data.retrofit.RetrofitGenerator
 import co.shimm.app.data.room.ShimDatabase
 import co.shimm.app.data.room.dao.*
@@ -11,6 +14,8 @@ import co.shimm.app.data.room.entity.ShimVideo
 import co.shimm.app.data.room.entity.ShimVideoPlaylist
 import co.shimm.app.data.room.response.*
 import co.shimm.app.data.user.UserInformation
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -81,5 +86,34 @@ class MainModel(context: Context) {
                 Log.d("counselorFail","counselorFail")
             }
         }))
+    }
+
+    fun playNext(){
+        Log.d("BEFORE INDEX", ShimPlayer.shimPlayIndex.toString())
+        ShimPlayer.shimPlayIndex = ShimPlayer.shimPlayIndex?.plus(1)
+        if(ShimPlayer.shimPlayIndex == ShimPlayer.shimPlaylist?.size){
+            ShimPlayer.shimPlayIndex = 0
+        }
+        Log.d("PlayNEXTINDEX", ShimPlayer.shimPlayIndex.toString())
+        val shimAudio = ShimPlayer.shimPlaylist?.get(ShimPlayer.shimPlayIndex!!)
+        playAudio(shimAudio)
+    }
+
+    fun playPrevious(){
+        ShimPlayer.shimPlayIndex = ShimPlayer.shimPlayIndex?.minus(1)
+        if(ShimPlayer.shimPlayIndex == -1){
+            ShimPlayer.shimPlayIndex = ShimPlayer.shimPlaylist?.size?.minus(1)
+        }
+
+        val shimAudio = ShimPlayer.shimPlaylist?.get(ShimPlayer.shimPlayIndex!!)
+        playAudio(shimAudio)
+    }
+
+    private fun playAudio(shimAudio: ShimAudio?){
+        val mediaSource = ProgressiveMediaSource.Factory(DefaultHttpDataSourceFactory(R.string.app_name.toString()))
+            .createMediaSource(Uri.parse(shimAudio?.src))
+        ShimPlayer.shimPlayer?.prepare(mediaSource)
+        ShimPlayer.shimPlayer?.playWhenReady = true
+        ShimPlayer.shimPlayerTitle = shimAudio?.title
     }
 }

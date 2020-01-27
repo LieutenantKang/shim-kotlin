@@ -42,18 +42,24 @@ class VideoPlaylistActivity : BaseActivity(), VideoPlaylistContract.View, View.O
 
         Glide.with(this).load(shimVideoPlaylist?.thumbnail).apply(RequestOptions.bitmapTransform(MultiTransformation<Bitmap>(
             BlurTransformation(25), ColorFilterTransformation(Color.argb(65, 0, 0, 0))
-        ))).into(video_playlist_thumbnail)
+        ))).error(R.drawable.card_image_sample).into(video_playlist_thumbnail)
 
         video_playlist_title.text = shimVideoPlaylist?.title
         video_playlist_description.text = shimVideoPlaylist?.description
         video_playlist_counselor_name.text = presenter.getCounselor(shimVideoPlaylist?.counselorId!!).name
+
+        video_playlist_back_button.setOnClickListener(this)
 
         presenter.initRecyclerViewData(recyclerViewAdapter, intent.getIntExtra("listId", -1))
     }
 
     override lateinit var presenter: VideoPlaylistContract.Presenter
 
-    override fun onClick(v: View?) { }
+    override fun onClick(v: View) {
+        when(v.id){
+            R.id.video_playlist_back_button -> finish()
+        }
+    }
 
     override fun isViewActive(): Boolean = checkActive()
 

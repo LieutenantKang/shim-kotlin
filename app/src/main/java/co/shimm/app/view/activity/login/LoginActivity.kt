@@ -1,6 +1,7 @@
 package co.shimm.app.view.activity.login
 
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity

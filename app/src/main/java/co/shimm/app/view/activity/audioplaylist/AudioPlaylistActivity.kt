@@ -40,18 +40,26 @@ class AudioPlaylistActivity : BaseActivity(), AudioPlaylistContract.View, View.O
 
         Glide.with(this).load(shimAudioPlaylist.thumbnail).apply(bitmapTransform(MultiTransformation<Bitmap>(
             BlurTransformation(25), ColorFilterTransformation(Color.argb(65,0,0,0))
-        ))).into(audio_playlist_thumbnail)
+        ))).error(R.drawable.card_image_sample).into(audio_playlist_thumbnail)
 
         audio_playlist_title.text = shimAudioPlaylist.title
         audio_playlist_description.text = shimAudioPlaylist.description
         audio_playlist_counselor_name.text = presenter.getCounselor(shimAudioPlaylist.counselorId!!).name
+
+        audio_playlist_back_button.setOnClickListener(this)
 
         presenter.initRecyclerViewData(recyclerViewAdapter, intent.getIntExtra("listId", -1))
     }
 
     override lateinit var presenter: AudioPlaylistContract.Presenter
 
-    override fun onClick(v: View?) { }
+    override fun onClick(v: View) {
+        when(v.id){
+            R.id.audio_playlist_back_button -> {
+                finish()
+            }
+        }
+    }
 
     override fun isViewActive(): Boolean = checkActive()
 

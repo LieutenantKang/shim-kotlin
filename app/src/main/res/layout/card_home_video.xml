@@ -12,8 +12,8 @@
 
         <ImageView
             android:id="@+id/card_home_video_thumbnail"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:src="@drawable/card_image_sample"
             android:scaleType="centerCrop"
             app:layout_constraintDimensionRatio="w, 1:1"
@@ -23,8 +23,8 @@
         <TextView
             android:id="@+id/card_home_video_title"
             style="@style/TextAppearance.MaterialComponents.Caption"
-            android:layout_width="160dp"
-            android:layout_height="50dp"
+            android:layout_width="120dp"
+            android:layout_height="45dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:ellipsize="end"
             android:gravity="center_vertical"

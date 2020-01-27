@@ -13,4 +13,12 @@ class MainPresenter(private val view: MainContract.View, context: Context): Main
     override fun fetchData() {
         mainModel.fetchData()
     }
+
+    override fun playNext() {
+        mainModel.playNext()
+    }
+
+    override fun playPrevious() {
+        mainModel.playPrevious()
+    }
 }

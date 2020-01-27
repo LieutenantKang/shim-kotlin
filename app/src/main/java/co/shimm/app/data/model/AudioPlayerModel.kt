@@ -1,6 +1,7 @@
 package co.shimm.app.data.model
 
 import android.net.Uri
+import android.util.Log
 import co.shimm.app.R
 import co.shimm.app.data.player.ShimPlayer.shimPlayIndex
 import co.shimm.app.data.player.ShimPlayer.shimPlayer
@@ -13,11 +14,12 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 
 class AudioPlayerModel {
     fun playNext(){
+        Log.d("BEFORE INDEX", shimPlayIndex.toString())
         shimPlayIndex = shimPlayIndex?.plus(1)
         if(shimPlayIndex == shimPlaylist?.size){
             shimPlayIndex = 0
         }
-
+        Log.d("PlayNEXTINDEX", shimPlayIndex.toString())
         val shimAudio = shimPlaylist?.get(shimPlayIndex!!)
         playAudio(shimAudio)
     }

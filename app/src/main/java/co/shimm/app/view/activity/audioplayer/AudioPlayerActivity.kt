@@ -17,6 +17,10 @@ import co.shimm.app.data.player.ShimPlayer.shimPlayerTitle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ui.PlayerNotificationManager
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import jp.wasabeef.glide.transformations.BlurTransformation
 import jp.wasabeef.glide.transformations.ColorFilterTransformation
 import kotlinx.android.synthetic.main.activity_audio_player.*
@@ -30,6 +34,7 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
     private lateinit var audioPlayerThumbnail : ImageView
     private lateinit var audioPlayerForwardButton : ImageButton
     private lateinit var audioPlayerRewindButton : ImageButton
+    private lateinit var disposable: Disposable
 
     override fun initView() {
         presenter = AudioPlayerPresenter(this@AudioPlayerActivity, this)
@@ -50,18 +55,33 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
 
         audioPlayerForwardButton.setOnClickListener(this)
         audioPlayerRewindButton.setOnClickListener(this)
+        audio_player_back_button.setOnClickListener(this)
+
+        disposable = PlayerEventBus.subscribe<PlayerData>()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                audioPlayerTitle.text = it.playerTitle
+            }
 
         updateUI()
+        addListener()
     }
 
     private fun updateUI(){
-        audioPlayerTitle.text = shimPlayerTitle
+        if(isViewActive()) {
+//            audioPlayerTitle.text = shimPlayerTitle
 
-        Glide.with(this).load(shimPlayerThumbnail).apply(bitmapTransform(MultiTransformation<Bitmap>(
-            BlurTransformation(25), ColorFilterTransformation(Color.argb(65,0,0,0))
-        ))).into(audio_player_thumbnail)
+            Glide.with(this).load(shimPlayerThumbnail).apply(
+                bitmapTransform(
+                    MultiTransformation<Bitmap>(
+                        BlurTransformation(25), ColorFilterTransformation(Color.argb(65, 0, 0, 0))
+                    )
+                )
+            ).error(R.drawable.card_image_sample).into(audio_player_thumbnail)
 
-        Glide.with(this).load(shimPlayerCounselor?.picture).into(audio_player_counselor_thumbnail)
+            Glide.with(this).load(shimPlayerCounselor?.picture)
+                .into(audio_player_counselor_thumbnail)
+        }
 
         PlayerEventBus.post(
             PlayerData(
@@ -69,6 +89,19 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
                 shimPlayerThumbnail.toString()
             )
         )
+    }
+
+    private fun addListener(){
+        val eventListener = object : Player.EventListener{
+            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                if(playbackState == Player.STATE_ENDED){
+                    presenter.playNext()
+                    updateUI()
+                }
+                super.onPlayerStateChanged(playWhenReady, playbackState)
+            }
+        }
+        shimPlayer?.addListener(eventListener)
     }
 
     override lateinit var presenter: AudioPlayerContract.Presenter
@@ -83,8 +116,17 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
                 presenter.playPrevious()
                 updateUI()
             }
+            R.id.audio_player_back_button -> {
+                finish()
+            }
         }
     }
 
     override fun isViewActive(): Boolean = checkActive()
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable.dispose()
+    }
+
 }

@@ -12,6 +12,8 @@ import co.shimm.app.data.player.HidePlayer
 import co.shimm.app.data.player.ShimPlayer.shimPlayer
 import co.shimm.app.data.player.PlayerEventBus
 import co.shimm.app.data.player.PlayerData
+import co.shimm.app.data.player.ShimPlayer.shimPlayerTitle
+import co.shimm.app.data.player.ShimPlayer.shimPlayerThumbnail
 import co.shimm.app.view.activity.audioplayer.AudioPlayerActivity
 import co.shimm.app.view.fragment.home.HomeFragment
 import co.shimm.app.view.fragment.audio.AudioFragment
@@ -45,6 +47,8 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
         initializePlayer()
 
         main_player.setOnClickListener(this)
+        exo_main_forward.setOnClickListener(this)
+        exo_main_rewind.setOnClickListener(this)
 
         val bottomNavigationView = findViewById<View>(R.id.main_navigation_view) as BottomNavigationView
         val fragmentHome = HomeFragment()
@@ -75,6 +79,14 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
             R.id.main_player -> {
                 val intent = Intent(this@MainActivity, AudioPlayerActivity::class.java)
                 startActivity(intent)
+            }
+            R.id.exo_main_forward -> {
+                presenter.playNext()
+                updateUI()
+            }
+            R.id.exo_main_rewind -> {
+                presenter.playPrevious()
+                updateUI()
             }
         }
     }
@@ -107,5 +119,18 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
             main_player.player = shimPlayer
             main_player.showTimeoutMs = 0
         }
+    }
+
+    private fun updateUI(){
+        if(isViewActive()) {
+            main_player_title.text = shimPlayerTitle
+        }
+
+        PlayerEventBus.post(
+            PlayerData(
+                shimPlayerTitle.toString(),
+                shimPlayerThumbnail.toString()
+            )
+        )
     }
 }
