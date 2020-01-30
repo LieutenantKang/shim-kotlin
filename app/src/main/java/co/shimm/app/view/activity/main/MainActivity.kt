@@ -1,6 +1,9 @@
 package co.shimm.app.view.activity.main
 
+import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
+import android.os.IBinder
 import android.view.MenuItem
 import android.view.View
 import android.view.View.INVISIBLE
@@ -8,13 +11,8 @@ import android.view.View.VISIBLE
 import android.widget.TextView
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
-import co.shimm.app.data.player.HidePlayer
-import co.shimm.app.data.player.ShimPlayer.shimPlayer
-import co.shimm.app.data.player.PlayerEventBus
-import co.shimm.app.data.player.PlayerData
-import co.shimm.app.data.player.ShimPlayer
-import co.shimm.app.data.player.ShimPlayer.shimPlayerTitle
-import co.shimm.app.data.player.ShimPlayer.shimPlayerThumbnail
+import co.shimm.app.data.player.*
+import co.shimm.app.data.player.ShimPlayerData.shimPlayer
 import co.shimm.app.view.activity.audioplayer.AudioPlayerActivity
 import co.shimm.app.view.fragment.home.HomeFragment
 import co.shimm.app.view.fragment.audio.AudioFragment
@@ -31,6 +29,22 @@ import kotlinx.android.synthetic.main.custom_main_player.*
 class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
     override val layoutRes: Int
         get() = R.layout.activity_main
+
+    companion object{
+        lateinit var shimService: ShimPlayerService
+    }
+
+    var isService : Boolean = false
+    var connection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            shimService = (service as ShimPlayerService.MyBinder).getService()
+            shimService.mainContext = applicationContext
+            isService = true
+        }
+        override fun onServiceDisconnected(name: ComponentName?) {
+            isService = false
+        }
+    }
 
     private lateinit var disposable: Disposable
     private lateinit var hideDisposable: Disposable
@@ -58,23 +72,38 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
         disposable = PlayerEventBus.subscribe<PlayerData>()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
+                main_player.visibility = VISIBLE
+                main_player_title.text = it.playerTitle
                 main_player.player = shimPlayer
-                mainPlayerView.visibility = VISIBLE
-                mainPlayerTitle.text = it.playerTitle
             }
 
         hideDisposable = PlayerEventBus.subscribe<HidePlayer>()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 mainPlayerView.visibility = INVISIBLE
+                shimPlayer?.stop()
             }
 
-        addListener()
+        if(!isService){
+            val intent = Intent(this@MainActivity, ShimPlayerService::class.java)
+            bindService(intent, connection, BIND_AUTO_CREATE)
+        }
+    }
+
+    override fun onResume() {
+        if(shimPlayer?.isPlaying!!){
+            mainPlayerView.visibility= VISIBLE
+            updateUI()
+        }
+        main_player.player = shimPlayer
+        super.onResume()
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        unbindService(connection)
+        isService = false
         disposable.dispose()
+        super.onDestroy()
     }
 
     override fun onClick(v: View) {
@@ -118,28 +147,14 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
 
     private fun updateUI(){
         if(isViewActive()) {
-            main_player_title.text = ShimPlayer.shimPlaylist!![shimPlayer?.currentWindowIndex!!].title.toString()
+            main_player_title.text = ShimPlayerData.shimPlaylist!![shimPlayer?.currentWindowIndex!!].title.toString()
         }
 
-        PlayerEventBus.post(
-            PlayerData(
-                ShimPlayer.shimPlaylist!![shimPlayer?.currentWindowIndex!!].title.toString(),
-                ShimPlayer.shimPlaylist!![shimPlayer?.currentWindowIndex!!].thumbnail.toString()
-            )
-        )
+//        PlayerEventBus.post(
+//            PlayerData(
+//                ShimPlayerData.shimPlaylist!![shimPlayer?.currentWindowIndex!!].title.toString(),
+//                ShimPlayerData.shimPlaylist!![shimPlayer?.currentWindowIndex!!].thumbnail.toString()
+//            )
+//        )
     }
-
-    private fun addListener(){
-        val eventListener = object : Player.EventListener{
-            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                if(playbackState == Player.STATE_READY){
-//                    presenter.playNext()
-                    updateUI()
-                }
-                super.onPlayerStateChanged(playWhenReady, playbackState)
-            }
-        }
-        shimPlayer?.addListener(eventListener)
-    }
-
 }

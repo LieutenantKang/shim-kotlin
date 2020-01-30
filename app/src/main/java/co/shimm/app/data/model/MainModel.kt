@@ -4,14 +4,11 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import co.shimm.app.R
-import co.shimm.app.data.player.ShimPlayer
+import co.shimm.app.data.player.ShimPlayerData
 import co.shimm.app.data.retrofit.RetrofitGenerator
 import co.shimm.app.data.room.ShimDatabase
 import co.shimm.app.data.room.dao.*
 import co.shimm.app.data.room.entity.ShimAudio
-import co.shimm.app.data.room.entity.ShimAudioPlaylist
-import co.shimm.app.data.room.entity.ShimVideo
-import co.shimm.app.data.room.entity.ShimVideoPlaylist
 import co.shimm.app.data.room.response.*
 import co.shimm.app.data.user.UserInformation
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
@@ -89,31 +86,31 @@ class MainModel(context: Context) {
     }
 
     fun playNext(){
-        Log.d("BEFORE INDEX", ShimPlayer.shimPlayIndex.toString())
-        ShimPlayer.shimPlayIndex = ShimPlayer.shimPlayIndex?.plus(1)
-        if(ShimPlayer.shimPlayIndex == ShimPlayer.shimPlaylist?.size){
-            ShimPlayer.shimPlayIndex = 0
+        Log.d("BEFORE INDEX", ShimPlayerData.shimPlayIndex.toString())
+        ShimPlayerData.shimPlayIndex = ShimPlayerData.shimPlayIndex?.plus(1)
+        if(ShimPlayerData.shimPlayIndex == ShimPlayerData.shimPlaylist?.size){
+            ShimPlayerData.shimPlayIndex = 0
         }
-        Log.d("PlayNEXTINDEX", ShimPlayer.shimPlayIndex.toString())
-        val shimAudio = ShimPlayer.shimPlaylist?.get(ShimPlayer.shimPlayIndex!!)
+        Log.d("PlayNEXTINDEX", ShimPlayerData.shimPlayIndex.toString())
+        val shimAudio = ShimPlayerData.shimPlaylist?.get(ShimPlayerData.shimPlayIndex!!)
         playAudio(shimAudio)
     }
 
     fun playPrevious(){
-        ShimPlayer.shimPlayIndex = ShimPlayer.shimPlayIndex?.minus(1)
-        if(ShimPlayer.shimPlayIndex == -1){
-            ShimPlayer.shimPlayIndex = ShimPlayer.shimPlaylist?.size?.minus(1)
+        ShimPlayerData.shimPlayIndex = ShimPlayerData.shimPlayIndex?.minus(1)
+        if(ShimPlayerData.shimPlayIndex == -1){
+            ShimPlayerData.shimPlayIndex = ShimPlayerData.shimPlaylist?.size?.minus(1)
         }
 
-        val shimAudio = ShimPlayer.shimPlaylist?.get(ShimPlayer.shimPlayIndex!!)
+        val shimAudio = ShimPlayerData.shimPlaylist?.get(ShimPlayerData.shimPlayIndex!!)
         playAudio(shimAudio)
     }
 
     private fun playAudio(shimAudio: ShimAudio?){
         val mediaSource = ProgressiveMediaSource.Factory(DefaultHttpDataSourceFactory(R.string.app_name.toString()))
             .createMediaSource(Uri.parse(shimAudio?.src))
-        ShimPlayer.shimPlayer?.prepare(mediaSource)
-        ShimPlayer.shimPlayer?.playWhenReady = true
-        ShimPlayer.shimPlayerTitle = shimAudio?.title
+        ShimPlayerData.shimPlayer?.prepare(mediaSource)
+        ShimPlayerData.shimPlayer?.playWhenReady = true
+        ShimPlayerData.shimPlayerTitle = shimAudio?.title
     }
 }

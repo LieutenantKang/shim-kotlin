@@ -3,7 +3,7 @@ package co.shimm.app.data.model
 import android.content.Context
 import android.net.Uri
 import co.shimm.app.R
-import co.shimm.app.data.player.ShimPlayer
+import co.shimm.app.data.player.ShimPlayerData
 import co.shimm.app.data.room.entity.ShimVideo
 import co.shimm.app.data.room.dao.ShimVideoPlaylistDao
 import co.shimm.app.data.room.ShimDatabase
@@ -39,9 +39,9 @@ class VideoModel(context: Context) {
     fun playVideo(shimVideo: ShimVideo){
         val mediaSource = ProgressiveMediaSource.Factory(DefaultHttpDataSourceFactory(R.string.app_name.toString()))
             .createMediaSource(Uri.parse(shimVideo.src))
-        ShimPlayer.shimPlayer?.prepare(mediaSource)
-        ShimPlayer.shimPlayer?.playWhenReady = true
-        ShimPlayer.shimPlayerThumbnail = shimVideo.thumbnail
-        ShimPlayer.shimPlayerTitle = shimVideo.title
+        ShimPlayerData.shimPlayer?.prepare(mediaSource)
+        ShimPlayerData.shimPlayer?.playWhenReady = true
+        ShimPlayerData.shimPlayerThumbnail = shimVideo.thumbnail
+        ShimPlayerData.shimPlayerTitle = shimVideo.title
     }
 }

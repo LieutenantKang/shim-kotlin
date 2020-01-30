@@ -3,11 +3,10 @@ package co.shimm.app.data.model
 import android.net.Uri
 import android.util.Log
 import co.shimm.app.R
-import co.shimm.app.data.player.ShimPlayer.shimPlayIndex
-import co.shimm.app.data.player.ShimPlayer.shimPlayer
-import co.shimm.app.data.player.ShimPlayer.shimPlayerThumbnail
-import co.shimm.app.data.player.ShimPlayer.shimPlayerTitle
-import co.shimm.app.data.player.ShimPlayer.shimPlaylist
+import co.shimm.app.data.player.ShimPlayerData.shimPlayIndex
+import co.shimm.app.data.player.ShimPlayerData.shimPlayer
+import co.shimm.app.data.player.ShimPlayerData.shimPlayerTitle
+import co.shimm.app.data.player.ShimPlayerData.shimPlaylist
 import co.shimm.app.data.room.entity.ShimAudio
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory

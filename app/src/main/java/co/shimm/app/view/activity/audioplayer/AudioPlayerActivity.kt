@@ -1,25 +1,29 @@
 package co.shimm.app.view.activity.audioplayer
 
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.os.IBinder
 import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
 import co.shimm.app.data.player.PlayerData
 import co.shimm.app.data.player.PlayerEventBus
-import co.shimm.app.data.player.ShimPlayer.shimPlayer
-import co.shimm.app.data.player.ShimPlayer.shimPlayerCounselor
-import co.shimm.app.data.player.ShimPlayer.shimPlayerThumbnail
-import co.shimm.app.data.player.ShimPlayer.shimPlayerTitle
-import co.shimm.app.data.player.ShimPlayer.shimPlaylist
+import co.shimm.app.data.player.ShimPlayerData.shimPlayer
+import co.shimm.app.data.player.ShimPlayerData.shimPlayerCounselor
+import co.shimm.app.data.player.ShimPlayerData.shimPlayerThumbnail
+import co.shimm.app.data.player.ShimPlayerData.shimPlayerTitle
+import co.shimm.app.data.player.ShimPlayerData.shimPlaylist
+import co.shimm.app.data.player.ShimPlayerService
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ui.PlayerNotificationManager
+import com.google.android.exoplayer2.util.Util
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -34,6 +38,11 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
     private lateinit var audioPlayerTitle : TextView
     private lateinit var audioPlayerThumbnail : ImageView
     private lateinit var disposable: Disposable
+
+    override fun onResume() {
+        updateUI()
+        super.onResume()
+    }
 
     override fun initView() {
         presenter = AudioPlayerPresenter(this@AudioPlayerActivity, this)
@@ -57,16 +66,20 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
                 audioPlayerTitle.text = it.playerTitle
             }
 
-        updateUI()
-        addListener()
+        PlayerEventBus.post(
+            PlayerData(
+                shimPlaylist!![shimPlayer?.currentWindowIndex!!].title.toString(),
+                shimPlaylist!![shimPlayer?.currentWindowIndex!!].thumbnail.toString()
+            )
+        )
     }
+
 
     private fun updateUI(){
         if(isViewActive()) {
-//            audioPlayerTitle.text = shimPlayerTitle
-//            audioPlayerTitle.text = shimPlaylist!![shimPlayer?.currentWindowIndex!!].title
+            audioPlayerTitle.text = shimPlaylist!![shimPlayer?.currentWindowIndex!!].title.toString()
 
-            Glide.with(this).load(shimPlaylist!![shimPlayer?.currentWindowIndex!!].thumbnail).apply(
+            Glide.with(this).load(shimPlayerThumbnail).apply(
                 bitmapTransform(
                     MultiTransformation<Bitmap>(
                         BlurTransformation(25), ColorFilterTransformation(Color.argb(65, 0, 0, 0))
@@ -77,34 +90,36 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
             Glide.with(this).load(shimPlayerCounselor?.picture)
                 .into(audio_player_counselor_thumbnail)
         }
-
-        PlayerEventBus.post(
-            PlayerData(
-                shimPlaylist!![shimPlayer?.currentWindowIndex!!].title.toString(),
-                shimPlaylist!![shimPlayer?.currentWindowIndex!!].thumbnail.toString()
-            )
-        )
+//
+//        PlayerEventBus.post(
+//            PlayerData(
+//                shimPlaylist!![shimPlayer?.currentWindowIndex!!].title.toString(),
+//                shimPlaylist!![shimPlayer?.currentWindowIndex!!].thumbnail.toString()
+//            )
+//        )
     }
-
-    private fun addListener(){
-        val eventListener = object : Player.EventListener{
-            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                if(playbackState == Player.STATE_READY){
-//                    presenter.playNext()
-                    updateUI()
-                }
-                super.onPlayerStateChanged(playWhenReady, playbackState)
-            }
-        }
-        shimPlayer?.addListener(eventListener)
-    }
+//
+//    private fun addListener(){
+//        val eventListener = object : Player.EventListener{
+//            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+//                if(playbackState == Player.STATE_READY){
+////                    presenter.playNext()
+//                    updateUI()
+//                }
+//                super.onPlayerStateChanged(playWhenReady, playbackState)
+//            }
+//        }
+//        shimPlayer?.addListener(eventListener)
+//    }
 
     override lateinit var presenter: AudioPlayerContract.Presenter
 
     override fun onClick(v: View) {
         when(v.id){
             R.id.audio_player_back_button -> {
-                finish()
+//                val intent = Intent(this, ShimPlayerService::class.java)
+//                Util.startForegroundService(this, intent)
+//                shimService.playAudio(applicationContext)
             }
         }
     }

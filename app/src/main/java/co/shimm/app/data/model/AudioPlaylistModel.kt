@@ -2,13 +2,8 @@ package co.shimm.app.data.model
 
 import android.content.Context
 import android.net.Uri
-import co.shimm.app.R
-import co.shimm.app.data.player.PlayerData
-import co.shimm.app.data.player.PlayerEventBus
-import co.shimm.app.data.player.ShimPlayer
-import co.shimm.app.data.player.ShimPlayer.shimPlayIndex
-import co.shimm.app.data.player.ShimPlayer.shimPlayer
-import co.shimm.app.data.player.ShimPlayer.shimPlaylist
+import co.shimm.app.data.player.ShimPlayerData.shimPlayer
+import co.shimm.app.data.player.ShimPlayerData.shimPlaylist
 import co.shimm.app.data.room.ShimDatabase
 import co.shimm.app.data.room.dao.ShimAudioDao
 import co.shimm.app.data.room.dao.ShimAudioPlaylistDao
@@ -20,10 +15,8 @@ import co.shimm.app.view.activity.audioplaylist.AudioPlaylistActivity
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.source.ExtractorMediaSource
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 
 class AudioPlaylistModel(val context: Context) {
@@ -43,20 +36,20 @@ class AudioPlaylistModel(val context: Context) {
 //
 //        val mediaSource = ProgressiveMediaSource.Factory(DefaultHttpDataSourceFactory(R.string.app_name.toString()))
 //            .createMediaSource(Uri.parse(shimAudio.src))
-//        ShimPlayer.shimPlayer?.prepare(mediaSource)
-//        ShimPlayer.shimPlayer?.playWhenReady = true
-//        ShimPlayer.shimPlayerThumbnail = shimAudio.thumbnail
-//        ShimPlayer.shimPlayerTitle = shimAudio.title
-
-        shimPlayer = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector())
-        val dataSourceFactory = DefaultDataSourceFactory(context, Util.getUserAgent(context, "Shim"))
-        val concatenatingMediaSource = ConcatenatingMediaSource()
-        for(shim in shimPlaylist.orEmpty()){
-            val mediaSource = ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(shim.src))
-            concatenatingMediaSource.addMediaSource(mediaSource)
-        }
-        shimPlayer?.prepare(concatenatingMediaSource)
-        shimPlayer?.playWhenReady = true
+//        ShimPlayerData.shimPlayer?.prepare(mediaSource)
+//        ShimPlayerData.shimPlayer?.playWhenReady = true
+//        ShimPlayerData.shimPlayerThumbnail = shimAudio.thumbnail
+//        ShimPlayerData.shimPlayerTitle = shimAudio.title
+//
+//        shimPlayer = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector())
+//        val dataSourceFactory = DefaultDataSourceFactory(context, Util.getUserAgent(context, "Shim"))
+//        val concatenatingMediaSource = ConcatenatingMediaSource()
+//        for(shim in shimPlaylist.orEmpty()){
+//            val mediaSource = ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(shim.src))
+//            concatenatingMediaSource.addMediaSource(mediaSource)
+//        }
+//        shimPlayer?.prepare(concatenatingMediaSource)
+//        shimPlayer?.playWhenReady = true
     }
 
     fun getAudioPlaylist(listId: Int) : ShimAudioPlaylist? {
