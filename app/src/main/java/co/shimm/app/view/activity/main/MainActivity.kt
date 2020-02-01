@@ -1,6 +1,7 @@
 package co.shimm.app.view.activity.main
 
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
@@ -69,8 +70,6 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
                 shimPlayer?.stop()
             }
 
-        val intent = Intent(this, ShimPlayerService::class.java)
-        Util.startForegroundService(this, intent)
     }
 
     override fun onResume() {

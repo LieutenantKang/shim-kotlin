@@ -24,6 +24,8 @@ class LoginActivity : BaseActivity(), LoginContract.View, View.OnClickListener {
         presenter.start()
 
         login_login_button.setOnClickListener(this)
+
+        presenter.checkAutoLogin()
     }
 
     override lateinit var presenter: LoginContract.Presenter

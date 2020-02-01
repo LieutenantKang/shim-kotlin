@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_schedule_layout"
-    android:layout_width="80dp"
-    android:layout_height="40dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="6dp"
     app:strokeColor="#FFFFFF"
@@ -17,6 +17,6 @@
         style="@style/TextAppearance.MaterialComponents.Subtitle1"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="60dp" />
 
 </com.google.android.material.card.MaterialCardView>
