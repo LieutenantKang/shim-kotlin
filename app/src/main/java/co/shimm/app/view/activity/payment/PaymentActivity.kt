@@ -4,7 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.webkit.CookieManager
+import android.webkit.WebChromeClient
 import android.webkit.WebSettings
+import android.webkit.WebViewClient
 import co.shimm.app.BuildConfig
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
@@ -24,6 +26,7 @@ class PaymentActivity : BaseActivity(), PaymentContract.View {
         presenter.start()
 
         payment_web_view.webViewClient = InicisWebViewClient(this)
+        payment_web_view.webChromeClient = WebChromeClient()
         val settings: WebSettings = payment_web_view.settings
         settings.javaScriptEnabled = true
 
