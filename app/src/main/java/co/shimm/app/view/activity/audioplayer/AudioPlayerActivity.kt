@@ -19,6 +19,7 @@ import co.shimm.app.data.player.ShimPlayerData.shimPlayerThumbnail
 import co.shimm.app.data.player.ShimPlayerData.shimPlayerTitle
 import co.shimm.app.data.player.ShimPlayerData.shimPlaylist
 import co.shimm.app.data.player.ShimPlayerService
+import co.shimm.app.view.activity.counselor.CounselorActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
@@ -59,6 +60,7 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
         audio_player_counselor_description.text = shimPlayerCounselor?.about
 
         audio_player_back_button.setOnClickListener(this)
+        audio_player_counselor_thumbnail.setOnClickListener(this)
 
         disposable = PlayerEventBus.subscribe<PlayerData>()
             .observeOn(AndroidSchedulers.mainThread())
@@ -117,9 +119,11 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
     override fun onClick(v: View) {
         when(v.id){
             R.id.audio_player_back_button -> {
-//                val intent = Intent(this, ShimPlayerService::class.java)
-//                Util.startForegroundService(this, intent)
-//                shimService.playAudio(applicationContext)
+                finish()
+            }
+            R.id.audio_player_counselor_thumbnail -> {
+                val intent = Intent(this@AudioPlayerActivity, CounselorActivity::class.java)
+                startActivity(intent)
             }
         }
     }

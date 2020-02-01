@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.webkit.CookieManager
 import android.webkit.WebSettings
+import co.shimm.app.BuildConfig
 import co.shimm.app.R
 import co.shimm.app.base.BaseActivity
 import co.shimm.app.data.user.UserInformation
@@ -38,7 +39,8 @@ class PaymentActivity : BaseActivity(), PaymentContract.View {
 
         if(intentData == null){
             val paymentHeader : HashMap<String?, String?> = hashMapOf("Authorization" to "Bearer "+UserInformation.token)
-            payment_web_view.loadUrl("http://www.iamport.kr/demo", paymentHeader)
+            payment_web_view.loadUrl(BuildConfig.SERVER_URL+"views/payments/schedules/"
+                +intent.getStringExtra("schedule_id")+"?unit=30m", paymentHeader)
         }else{
             val url = intentData.toString()
             if(url.startsWith(APP_SCHEME)){

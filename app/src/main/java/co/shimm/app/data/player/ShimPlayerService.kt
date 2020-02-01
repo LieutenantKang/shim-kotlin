@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Binder
 import android.os.IBinder
 import co.shimm.app.R
 import co.shimm.app.data.player.ShimPlayerData.shimPlayer
@@ -31,18 +30,13 @@ import com.google.android.exoplayer2.util.Util
 class ShimPlayerService : Service() {
 //    lateinit var shimPlayer : SimpleExoPlayer
     lateinit var shimNotificationManager : PlayerNotificationManager
-    lateinit var mainContext : Context
-    var serviceBinder : IBinder = MyBinder()
-
-    class MyBinder : Binder() {
-        fun getService() : ShimPlayerService{ return ShimPlayerService() }
-    }
 
     override fun onCreate() {
         super.onCreate()
+        val context : Context = this
 
         addListener()
-//        shimPlayer = ExoPlayerFactory.newSimpleInstance(this, DefaultTrackSelector())
+        setNotificationManager(context)
     }
 
     private fun addListener(){
@@ -64,32 +58,31 @@ class ShimPlayerService : Service() {
     }
 
     override fun onDestroy() {
-//        shimPlayer.release()
-        // shimPlayer = null
         shimNotificationManager.setPlayer(null)
+        shimPlayer?.release()
         super.onDestroy()
     }
 
-    fun playAudio(index: Int) {
-//        val context : Context = this
-        val dataSourceFactory = DefaultDataSourceFactory(mainContext, Util.getUserAgent(mainContext, "Shim"))
-        val concatenatingMediaSource = ConcatenatingMediaSource()
-
-        for(shim in shimPlaylist.orEmpty()){
-            val mediaSource = ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(shim.src))
-            concatenatingMediaSource.addMediaSource(mediaSource)
-        }
-        shimPlayer?.prepare(concatenatingMediaSource)
-        shimPlayer?.seekTo(index, C.TIME_UNSET)
-        shimPlayer?.playWhenReady = true
-
-        setNotificationManager(mainContext)
-    }
+//    fun playAudio(index: Int) {
+//        val dataSourceFactory = DefaultDataSourceFactory(mainContext, Util.getUserAgent(mainContext, "Shim"))
+//        val concatenatingMediaSource = ConcatenatingMediaSource()
+//
+//        for(shim in shimPlaylist.orEmpty()){
+//            val mediaSource = ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(shim.src))
+//            concatenatingMediaSource.addMediaSource(mediaSource)
+//        }
+//        shimPlayer?.prepare(concatenatingMediaSource)
+//        shimPlayer?.seekTo(index, C.TIME_UNSET)
+//        shimPlayer?.playWhenReady = true
+//
+//        setNotificationManager(mainContext)
+//    }
 
     private fun setNotificationManager(context: Context){
 
         shimNotificationManager = PlayerNotificationManager.createWithNotificationChannel(context, "7", R.string.app_name, R.string.app_name,
             object : PlayerNotificationManager.MediaDescriptionAdapter{
+
                 override fun createCurrentContentIntent(player: Player?): PendingIntent? {
                     val intent = Intent(context, MainActivity::class.java)
                     return PendingIntent.getActivity(context, 8888, intent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -116,11 +109,20 @@ class ShimPlayerService : Service() {
 
         shimNotificationManager.setNotificationListener(
             object : PlayerNotificationManager.NotificationListener{
+                override fun onNotificationStarted(
+                    notificationId: Int,
+                    notification: Notification?
+                ) {
+                    startForeground(notificationId,notification)
+                }
+                override fun onNotificationCancelled(notificationId: Int, dismissedByUser: Boolean) {
+                    stopSelf()
+                    stopForeground(true)
+                }
             }
         )
-
         shimNotificationManager.setPlayer(shimPlayer)
     }
 
-    override fun onBind(intent: Intent): IBinder? { return serviceBinder }
+    override fun onBind(intent: Intent?): IBinder? { return null }
 }

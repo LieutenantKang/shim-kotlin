@@ -91,7 +91,8 @@ class AudioPlaylistActivity : BaseActivity(), AudioPlaylistContract.View, View.O
                 val intent = Intent(holder.itemView.context, AudioPlayerActivity::class.java)
                 shimPlayerCounselor = presenter.getCounselor(shimAudioPlaylist.counselorId!!)
                 holder.itemView.context.startActivity(intent)
-                MainActivity.shimService.playAudio(position)
+//                MainActivity.shimService.playAudio(position)
+
             }
         }
 

@@ -3,10 +3,7 @@ package co.shimm.app.data.retrofit
 import co.shimm.app.data.room.request.AgreeTermsRequest
 import co.shimm.app.data.room.response.*
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface RetrofitService {
     @GET("/users/check")
@@ -38,4 +35,7 @@ interface RetrofitService {
 
     @GET("/playlists/audios/recommends?limit=4")
     fun getRecommendAudioList(@Header("Authorization") token : String?) : Call<AudioPlaylistResponse>
+
+    @GET("/counselors/{id}/schedules")
+    fun getSchedule(@Header("Authorization") token: String?, @Path("id") id: Int) : Call<ScheduleResponse>
 }

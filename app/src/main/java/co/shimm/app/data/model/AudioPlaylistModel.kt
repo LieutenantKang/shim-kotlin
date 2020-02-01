@@ -12,6 +12,7 @@ import co.shimm.app.data.room.entity.ShimAudio
 import co.shimm.app.data.room.entity.ShimAudioPlaylist
 import co.shimm.app.data.room.entity.ShimCounselor
 import co.shimm.app.view.activity.audioplaylist.AudioPlaylistActivity
+import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.source.ConcatenatingMediaSource
 import com.google.android.exoplayer2.source.ExtractorMediaSource
@@ -50,6 +51,16 @@ class AudioPlaylistModel(val context: Context) {
 //        }
 //        shimPlayer?.prepare(concatenatingMediaSource)
 //        shimPlayer?.playWhenReady = true
+        val dataSourceFactory = DefaultDataSourceFactory(context, Util.getUserAgent(context, "Shim"))
+        val concatenatingMediaSource = ConcatenatingMediaSource()
+
+        for(shim in shimPlaylist.orEmpty()){
+            val mediaSource = ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(Uri.parse(shim.src))
+            concatenatingMediaSource.addMediaSource(mediaSource)
+        }
+        shimPlayer?.prepare(concatenatingMediaSource)
+        shimPlayer?.seekTo(index, C.TIME_UNSET)
+        shimPlayer?.playWhenReady = true
     }
 
     fun getAudioPlaylist(listId: Int) : ShimAudioPlaylist? {

@@ -20,6 +20,7 @@ import co.shimm.app.view.fragment.video.VideoFragment
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.PlayerControlView
+import com.google.android.exoplayer2.util.Util
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -29,22 +30,6 @@ import kotlinx.android.synthetic.main.custom_main_player.*
 class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnNavigationItemSelectedListener, View.OnClickListener{
     override val layoutRes: Int
         get() = R.layout.activity_main
-
-    companion object{
-        lateinit var shimService: ShimPlayerService
-    }
-
-    var isService : Boolean = false
-    var connection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            shimService = (service as ShimPlayerService.MyBinder).getService()
-            shimService.mainContext = applicationContext
-            isService = true
-        }
-        override fun onServiceDisconnected(name: ComponentName?) {
-            isService = false
-        }
-    }
 
     private lateinit var disposable: Disposable
     private lateinit var hideDisposable: Disposable
@@ -84,10 +69,8 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
                 shimPlayer?.stop()
             }
 
-        if(!isService){
-            val intent = Intent(this@MainActivity, ShimPlayerService::class.java)
-            bindService(intent, connection, BIND_AUTO_CREATE)
-        }
+        val intent = Intent(this, ShimPlayerService::class.java)
+        Util.startForegroundService(this, intent)
     }
 
     override fun onResume() {
@@ -100,8 +83,6 @@ class MainActivity : BaseActivity(), MainContract.View, BottomNavigationView.OnN
     }
 
     override fun onDestroy() {
-        unbindService(connection)
-        isService = false
         disposable.dispose()
         super.onDestroy()
     }
