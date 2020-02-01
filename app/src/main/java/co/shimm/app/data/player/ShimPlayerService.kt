@@ -59,7 +59,6 @@ class ShimPlayerService : Service() {
 
     override fun onDestroy() {
         shimNotificationManager.setPlayer(null)
-        shimPlayer?.release()
         super.onDestroy()
     }
 
@@ -117,10 +116,13 @@ class ShimPlayerService : Service() {
                 }
                 override fun onNotificationCancelled(notificationId: Int, dismissedByUser: Boolean) {
                     stopSelf()
-                    stopForeground(true)
                 }
             }
         )
+        shimNotificationManager.setRewindIncrementMs(0)
+        shimNotificationManager.setFastForwardIncrementMs(0)
+        shimNotificationManager.setUseStopAction(true)
+
         shimNotificationManager.setPlayer(shimPlayer)
     }
 

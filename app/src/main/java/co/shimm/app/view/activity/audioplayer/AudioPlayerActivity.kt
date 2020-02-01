@@ -74,6 +74,9 @@ class AudioPlayerActivity : BaseActivity(), AudioPlayerContract.View, View.OnCli
                 shimPlaylist!![shimPlayer?.currentWindowIndex!!].thumbnail.toString()
             )
         )
+
+        val intent = Intent(this, ShimPlayerService::class.java)
+        Util.startForegroundService(this, intent)
     }
 
 

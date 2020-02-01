@@ -33,4 +33,8 @@ class LoginPresenter(private val view: LoginContract.View, activity: Activity) :
     }
 
     override fun onFailure(t: Throwable) { }
+
+    override fun checkAutoLogin() {
+        loginModel.checkAutoLogin()
+    }
 }

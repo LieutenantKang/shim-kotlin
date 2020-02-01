@@ -29,5 +29,6 @@ interface LoginContract {
     interface Presenter: BaseContract.BasePresenter{
         fun signIn()
         fun checkAccount(task: Task<GoogleSignInAccount>)
+        fun checkAutoLogin()
     }
 }
