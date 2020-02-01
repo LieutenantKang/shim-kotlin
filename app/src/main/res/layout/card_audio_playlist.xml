@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="2dp">
+    app:cardCornerRadius="10dp"
+    android:layout_margin="15dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/card_audio_playlist_layout"
@@ -16,11 +17,22 @@
             android:layout_height="0dp"
             android:scaleType="centerCrop"
             android:src="@drawable/card_image_sample"
+            android:tint="#3F000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="w,9:16"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_play"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="10dp"
+            />
 
         <TextView
             android:id="@+id/card_audio_playlist_title"
@@ -31,7 +43,9 @@
             android:gravity="center_vertical"
             android:paddingStart="18dp"
             android:paddingEnd="60dp"
+            android:paddingBottom="10dp"
             style="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textSize="18sp"
             android:text="플레이리스트"
             android:fontFamily="sans-serif"
             android:textColor="#ffffff"
@@ -42,4 +56,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

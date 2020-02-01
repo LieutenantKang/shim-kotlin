@@ -4,14 +4,25 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <ImageView
+        android:id="@+id/home_logo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/shim_pc"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        />
+
     <TextView
         android:id="@+id/home_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_logo"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:text="@string/home_today"
         android:textColor="#010038"
         android:textSize="30sp"/>
