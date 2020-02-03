@@ -6,6 +6,7 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.media.AudioManager
 import android.net.Uri
 import android.os.IBinder
 import co.shimm.app.R
@@ -37,6 +38,7 @@ class ShimPlayerService : Service() {
 
         addListener()
         setNotificationManager(context)
+        setAudioFocus()
     }
 
     private fun addListener(){
@@ -124,6 +126,31 @@ class ShimPlayerService : Service() {
         shimNotificationManager.setUseStopAction(true)
 
         shimNotificationManager.setPlayer(shimPlayer)
+    }
+
+    private fun setAudioFocus() {
+        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        val afChangeListener: AudioManager.OnAudioFocusChangeListener =
+            AudioManager.OnAudioFocusChangeListener {
+                when (it) {
+                    AudioManager.AUDIOFOCUS_LOSS -> {
+                        shimPlayer?.playWhenReady = false
+                    }
+                    AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
+                        shimPlayer?.playWhenReady = false
+                    }
+                    AudioManager.AUDIOFOCUS_GAIN -> {
+                        shimPlayer?.playWhenReady = true
+
+                    }
+                }
+            }
+        val result: Int = audioManager.requestAudioFocus(
+            afChangeListener,
+            AudioManager.STREAM_MUSIC,
+            AudioManager.AUDIOFOCUS_GAIN
+        )
+        shimPlayer?.playWhenReady = result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
     }
 
     override fun onBind(intent: Intent?): IBinder? { return null }

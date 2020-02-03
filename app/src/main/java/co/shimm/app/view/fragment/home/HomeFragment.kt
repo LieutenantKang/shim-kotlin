@@ -16,12 +16,15 @@ import co.shimm.app.data.room.entity.ShimAudioPlaylist
 import co.shimm.app.data.room.entity.ShimVideo
 import co.shimm.app.data.room.entity.ShimVideoPlaylist
 import co.shimm.app.view.activity.audioplaylist.AudioPlaylistActivity
+import co.shimm.app.view.activity.setting.SettingActivity
 import co.shimm.app.view.activity.videoplaylist.VideoPlaylistActivity
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.card_home_audio.view.*
 import kotlinx.android.synthetic.main.card_home_video.view.*
+import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeFragment : BaseFragment(), HomeContract.View {
+class HomeFragment : BaseFragment(), HomeContract.View, View.OnClickListener {
     override val layoutRes: Int
         get() = R.layout.fragment_home
 
@@ -44,7 +47,15 @@ class HomeFragment : BaseFragment(), HomeContract.View {
         videoRecyclerView?.adapter = videoRecyclerViewAdapter
         audioRecyclerView?.adapter = audioRecyclerViewAdapter
 
+        home_setting_button.setOnClickListener(this)
+
         presenter.initRecyclerViewData(videoRecyclerViewAdapter, audioRecyclerViewAdapter)
+    }
+
+    override fun onClick(v: View) {
+        when(v.id){
+            R.id.home_setting_button -> startActivity(Intent(activity, SettingActivity::class.java))
+        }
     }
 
     override fun isViewActive(): Boolean = checkActive()

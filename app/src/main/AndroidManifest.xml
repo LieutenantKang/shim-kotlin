@@ -19,7 +19,8 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup"
         tools:targetApi="m">
-        <activity android:name=".view.activity.schedule.ScheduleActivity"></activity>
+        <activity android:name=".view.activity.setting.SettingActivity"></activity>
+        <activity android:name=".view.activity.schedule.ScheduleActivity" />
         <activity android:name=".view.activity.counselor.CounselorActivity" />
         <activity android:name=".view.activity.terms.TermsActivity" />
         <activity android:name=".view.activity.agreement.AgreementActivity" />
